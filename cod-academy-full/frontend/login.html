@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COD Academy — Login</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@400,500,600,700&f[]=jet-brains-mono@400,500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --s0:#050508;--s1:#0a0a0d;--s2:#101014;--s3:#161619;
+      --glow:#00e85e;--glow-dim:rgba(0,232,94,0.06);--glow-mid:rgba(0,232,94,0.14);
+      --blue:#3b82f6;--violet:#a855f7;--red:#ef4444;--amber:#f59e0b;--rose:#f43f5e;
+      --ink:rgba(255,255,255,0.9);--ink50:rgba(255,255,255,0.35);--ink20:rgba(255,255,255,0.15);
+      --edge:rgba(255,255,255,0.06);
+      --font:'Satoshi',sans-serif;--fontD:'Clash Display',sans-serif;--fontM:'JetBrains Mono',monospace;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{-webkit-font-smoothing:antialiased}
+    body{font-family:var(--font);background:var(--s0);color:var(--ink);min-height:100vh;display:flex;overflow:hidden}
+    input::placeholder{color:rgba(255,255,255,0.18)}
+
+    @keyframes floatUp{0%{transform:translateY(0) rotate(0deg) scale(1);opacity:0}8%{opacity:.55}85%{opacity:.3}100%{transform:translateY(-105vh) rotate(360deg) scale(.7);opacity:0}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    @keyframes gradShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(0,232,94,.2)}50%{box-shadow:0 0 40px rgba(0,232,94,.45),0 0 80px rgba(0,232,94,.1)}}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+    @keyframes orbit{0%{transform:rotate(0deg) translateX(100px) rotate(0deg)}100%{transform:rotate(360deg) translateX(100px) rotate(-360deg)}}
+    @keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes shimmer{0%{left:-100%}100%{left:200%}}
+    @keyframes breathe{0%,100%{opacity:.5}50%{opacity:.2}}
+
+    /* ═══ LEFT PANEL ═══ */
+    .left{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:60px 50px;background:linear-gradient(135deg,#050508 0%,#081a0f 50%,#050508 100%)}
+    .left::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px;opacity:.025;pointer-events:none}
+
+    .orb{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
+    .orb-1{width:500px;height:500px;top:-10%;left:-5%;background:rgba(0,232,94,.06);animation:pulse 15s ease-in-out infinite}
+    .orb-2{width:350px;height:350px;bottom:5%;right:5%;background:rgba(59,130,246,.05);animation:pulse 20s ease-in-out infinite 3s}
+    .orb-3{width:250px;height:250px;top:40%;left:55%;background:rgba(168,85,247,.04);animation:pulse 18s ease-in-out infinite 6s}
+
+    .floater{position:absolute;bottom:-50px;pointer-events:none;animation:floatUp var(--dur) var(--delay) ease-in-out infinite;font-size:var(--size);left:var(--x);z-index:1}
+
+    /* Ticker */
+    .ticker-bar{position:absolute;top:0;left:0;right:0;height:34px;background:rgba(0,232,94,.04);border-bottom:1px solid rgba(0,232,94,.08);overflow:hidden;display:flex;align-items:center;z-index:3}
+    .ticker-track{display:flex;gap:40px;white-space:nowrap;animation:ticker 35s linear infinite;font-size:11px;font-weight:600;letter-spacing:.8px}
+    .ticker-track span{display:flex;align-items:center;gap:5px}
+
+    /* Hero */
+    .hero{position:relative;z-index:2}
+    .hero-badge{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--glow);text-transform:uppercase;display:flex;align-items:center;gap:8px;margin-bottom:16px}
+    .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--glow);box-shadow:0 0 10px rgba(0,232,94,.5)}
+    .hero h1{font-family:var(--fontD);font-size:clamp(2.2rem,3.8vw,3.2rem);font-weight:700;line-height:1.05;letter-spacing:-.03em;margin-bottom:18px}
+    .hero h1 .grad{background:linear-gradient(135deg,#00e85e,#3b82f6,#a855f7);background-size:200% 200%;animation:gradShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{color:rgba(255,255,255,.35);font-size:14.5px;max-width:400px;line-height:1.7;margin-bottom:30px}
+
+    /* Stats cards */
+    .stats{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+    .stat-card{background:rgba(255,255,255,.025);border:1px solid var(--edge);border-radius:14px;padding:14px 18px;min-width:130px;animation:fadeIn .5s var(--ease) both}
+    .stat-card:nth-child(1){animation-delay:.2s}.stat-card:nth-child(2){animation-delay:.35s}.stat-card:nth-child(3){animation-delay:.5s}
+    .stat-icon{font-size:18px;margin-bottom:5px}
+    .stat-val{font-family:var(--fontD);font-size:22px;font-weight:800;line-height:1.1}
+    .stat-label{font-size:10px;color:rgba(255,255,255,.25);font-weight:500;margin-top:2px}
+
+    /* Mini charts */
+    .charts-row{display:flex;gap:12px;max-width:460px}
+    .mini-chart{flex:1;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);border-radius:11px;padding:10px 12px;animation:fadeIn .6s var(--ease) both}
+    .mini-chart:nth-child(1){animation-delay:.5s}.mini-chart:nth-child(2){animation-delay:.65s}.mini-chart:nth-child(3){animation-delay:.8s}
+    .chart-label{font-size:9px;color:rgba(255,255,255,.25);font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+
+    /* Orbiting */
+    .orbit-container{position:absolute;bottom:12%;right:12%;width:200px;height:200px}
+    .orbit-el{position:absolute;top:50%;left:50%;margin:-14px 0 0 -14px;font-size:22px;opacity:.35}
+
+    /* Bottom bars */
+    .bottom-bars{position:absolute;bottom:25px;left:50px;right:50px;display:flex;align-items:flex-end;gap:3px;height:45px;opacity:.12;z-index:1}
+    .bar{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(to top,rgba(0,232,94,.5),rgba(0,232,94,.08));transform-origin:bottom;animation:barGrow .5s var(--ease) both}
+
+    /* ═══ RIGHT PANEL ═══ */
+    .right{width:420px;min-height:100vh;background:var(--s1);border-left:1px solid var(--edge);display:flex;flex-direction:column;justify-content:center;padding:40px 34px;position:relative;z-index:5}
+    .right::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(0,232,94,.25),transparent)}
+
+    .logo-area{text-align:center;margin-bottom:36px}
+    .logo-ring{width:46px;height:46px;border-radius:50%;background:var(--glow);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;animation:glow 3s ease-in-out infinite}
+    .logo-ring .inner{width:16px;height:16px;border-radius:50%;background:var(--s1)}
+    .logo-area h2{font-family:var(--fontD);font-size:1.5rem;font-weight:600;letter-spacing:-.03em}
+    .logo-area p{font-size:12.5px;color:rgba(255,255,255,.2);margin-top:4px}
+
+    /* Tabs */
+    .tabs{display:flex;gap:3px;margin-bottom:26px;background:rgba(255,255,255,.03);border-radius:10px;padding:3px}
+    .tab{flex:1;padding:9px 0;border:none;border-radius:8px;background:transparent;color:rgba(255,255,255,.3);font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .25s var(--ease)}
+    .tab.active{background:rgba(255,255,255,.07);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+    /* Forms */
+    .auth-form{display:none}.auth-form.active{display:block;animation:fadeIn .3s var(--ease)}
+    .fg{margin-bottom:14px}
+    .fg label{display:block;font-size:9.5px;font-weight:700;color:rgba(255,255,255,.22);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px}
+    .fi{width:100%;padding:12px 15px;background:rgba(255,255,255,.03);border:1px solid var(--edge);border-radius:11px;color:#f0f0f0;font-family:var(--font);font-size:13.5px;outline:none;transition:all .25s var(--ease)}
+    .fi:focus{border-color:rgba(0,232,94,.3);box-shadow:0 0 0 3px var(--glow-dim)}
+    .pw-wrap{position:relative}
+    .pw-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.2);cursor:pointer;font-size:9px;font-weight:700;font-family:var(--fontM);letter-spacing:.5px;transition:color .2s}
+    .pw-btn:hover{color:rgba(255,255,255,.6)}
+
+    .btn-go{width:100%;padding:13px;border:none;border-radius:11px;background:var(--glow);color:var(--s0);font-family:var(--font);font-size:13.5px;font-weight:700;cursor:pointer;margin-top:6px;transition:all .25s var(--ease);box-shadow:0 4px 20px rgba(0,232,94,.2);position:relative;overflow:hidden}
+    .btn-go:hover{box-shadow:0 4px 30px rgba(0,232,94,.45);transform:translateY(-2px)}
+    .btn-go:active{transform:translateY(0)}
+    .btn-go:disabled{opacity:.4;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+    .btn-go .shimmer{position:absolute;top:0;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);animation:shimmer 3s ease-in-out infinite}
+    .btn-go .spinner{display:none;width:18px;height:18px;border:2px solid rgba(0,0,0,.15);border-top-color:#050508;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto}
+    .btn-go.loading .btn-text{display:none}.btn-go.loading .spinner{display:block}.btn-go.loading .shimmer{display:none}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .msg{padding:10px 13px;border-radius:10px;font-size:12.5px;font-weight:500;margin-bottom:14px;display:none;animation:fadeIn .3s var(--ease)}
+    .msg.show{display:block}
+    .msg.error{background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.12);color:var(--red)}
+    .msg.success{background:var(--glow-dim);border:1px solid var(--glow-mid);color:var(--glow)}
+
+    .forgot-link{display:block;text-align:right;margin-top:8px;margin-bottom:4px;font-size:11.5px;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s}
+    .forgot-link:hover{color:var(--glow)}
+
+    /* Social proof */
+    .social-proof{margin-top:26px;text-align:center}
+    .avatars{display:flex;justify-content:center;margin-bottom:6px}
+    .avatar{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.04);border:2px solid var(--s1);display:flex;align-items:center;justify-content:center;font-size:12px;margin-left:-5px}
+    .avatar:first-child{margin-left:0}
+    .social-proof p{font-size:10.5px;color:rgba(255,255,255,.18)}
+    .social-proof p b{color:var(--glow);font-weight:700}
+
+    .footer{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:9px;color:rgba(255,255,255,.1);letter-spacing:1px;text-transform:uppercase;font-family:var(--fontM)}
+
+    @media(max-width:900px){
+      body{flex-direction:column}
+      .left{display:none}
+      .right{width:100%;min-height:100vh;border-left:none}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LEFT — Visual showcase ═══ -->
+<div class="left">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Floating emojis -->
+  <div id="floaters"></div>
+
+  <!-- Ticker -->
+  <div class="ticker-bar">
+    <div class="ticker-track" id="tickerTrack"></div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span>PLATFORMA #1 DIN ROMANIA</div>
+    <h1>Învață să faci<br><span class="grad">bani din e-commerce</span><br>COD România</h1>
+    <p>12 module intensive. De la zero la profit. Strategii testate pe piața românească cu rezultate reale.</p>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-val" style="color:var(--glow)"><span class="counter" data-end="2847">0</span></div>
+        <div class="stat-label">Studenți activi</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-val" style="color:var(--blue)"><span class="counter" data-end="148" data-suffix="K €">0</span></div>
+        <div class="stat-label">Profit generat</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-val" style="color:var(--violet)"><span class="counter" data-end="89" data-suffix="%">0</span></div>
+        <div class="stat-label">Rata succes</div>
+      </div>
+    </div>
+
+    <div class="charts-row">
+      <div class="mini-chart">
+        <div class="chart-label">Revenue lunar</div>
+        <svg id="chart1" viewBox="0 0 100 50" style="width:100%;height:50px"></svg>
+      </div>
+      <div class="mini-chart">
+        <div class="chart-label">Comenzi zilnice</div>
+        <svg id="chart2" viewBox="0 0 100 50" style="width:100%;height:50px"></svg>
+      </div>
+      <div class="mini-chart">
+        <div class="chart-label">Profit cumulat</div>
+        <svg id="chart3" viewBox="0 0 100 50" style="width:100%;height:50px"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Orbiting -->
+  <div class="orbit-container">
+    <div class="orbit-el" style="animation:orbit 12s linear infinite">💰</div>
+    <div class="orbit-el" style="animation:orbit 15s linear infinite -3.75s">📦</div>
+    <div class="orbit-el" style="animation:orbit 18s linear infinite -6s">🚀</div>
+    <div class="orbit-el" style="animation:orbit 21s linear infinite -10s">💎</div>
+  </div>
+
+  <!-- Bottom bars -->
+  <div class="bottom-bars" id="bottomBars"></div>
+</div>
+
+<!-- ═══ RIGHT — Auth ═══ -->
+<div class="right">
+  <div class="logo-area">
+    <div class="logo-ring"><div class="inner"></div></div>
+    <h2>COD Academy</h2>
+    <p>Platforma ta de e-commerce</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="login">Autentificare</button>
+    <button class="tab" data-tab="register">Cont Nou</button>
+  </div>
+
+  <div class="msg" id="authMsg"></div>
+
+  <!-- LOGIN -->
+  <form class="auth-form active" id="loginForm">
+    <div class="fg">
+      <label>Username sau Email</label>
+      <input type="text" class="fi" id="loginUser" placeholder="trader123" required autocomplete="username">
+    </div>
+    <div class="fg">
+      <label>Parola</label>
+      <div class="pw-wrap">
+        <input type="password" class="fi" id="loginPass" placeholder="••••••••" required autocomplete="current-password">
+        <button type="button" class="pw-btn" onclick="togglePw('loginPass',this)">SHOW</button>
+      </div>
+    </div>
+    <a href="#" class="forgot-link" onclick="showForgot(event)">Ai uitat parola?</a>
+    <button type="submit" class="btn-go" id="loginBtn">
+      <span class="shimmer"></span>
+      <span class="btn-text">Intră în cont</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+
+  <!-- REGISTER -->
+  <form class="auth-form" id="registerForm">
+    <div class="fg">
+      <label>Username</label>
+      <input type="text" class="fi" id="regUser" placeholder="trader123" required minlength="3" maxlength="30" autocomplete="username">
+    </div>
+    <div class="fg">
+      <label>Email</label>
+      <input type="email" class="fi" id="regEmail" placeholder="email@exemplu.com" required autocomplete="email">
+    </div>
+    <div class="fg">
+      <label>Nume afișat</label>
+      <input type="text" class="fi" id="regName" placeholder="Ion Popescu" autocomplete="name">
+    </div>
+    <div class="fg">
+      <label>Parola</label>
+      <div class="pw-wrap">
+        <input type="password" class="fi" id="regPass" placeholder="Minim 6 caractere + o cifră" required minlength="6" autocomplete="new-password">
+        <button type="button" class="pw-btn" onclick="togglePw('regPass',this)">SHOW</button>
+      </div>
+    </div>
+    <button type="submit" class="btn-go" id="regBtn">
+      <span class="shimmer"></span>
+      <span class="btn-text">Creează cont</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+
+  <!-- FORGOT PASSWORD -->
+  <form class="auth-form" id="forgotForm">
+    <div class="fg">
+      <label>Email-ul contului</label>
+      <input type="email" class="fi" id="forgotEmail" placeholder="email@exemplu.com" required>
+    </div>
+    <button type="submit" class="btn-go" id="forgotBtn">
+      <span class="shimmer"></span>
+      <span class="btn-text">Trimite link de resetare</span>
+      <div class="spinner"></div>
+    </button>
+    <a href="#" class="forgot-link" style="text-align:center;margin-top:14px" onclick="backToLogin(event)">← Înapoi la login</a>
+  </form>
+
+  <div class="social-proof">
+    <div class="avatars">
+      <div class="avatar">😎</div><div class="avatar">🧑‍💻</div><div class="avatar">👨‍💼</div><div class="avatar">👩‍💻</div><div class="avatar">🧑‍🚀</div>
+    </div>
+    <p><b>+2,847</b> studenți activi în platformă</p>
+  </div>
+
+  <div class="footer">COD ACADEMY © 2026</div>
+</div>
+
+<script>
+const API = window.location.origin + "/api";
+if (localStorage.getItem("cod_token")) window.location.href = "index.html";
+
+// ═══ VISUAL EFFECTS ═══
+
+// Floating emojis
+const FLOATERS = ["💰","📦","🚀","💎","📊","💵","🛒","📈","🏆","💳","🔥","⚡","💸","🎯","📱","🤑","💲","🏪"];
+const floaterBox = document.getElementById("floaters");
+for (let i = 0; i < 28; i++) {
+  const el = document.createElement("div");
+  el.className = "floater";
+  el.textContent = FLOATERS[Math.floor(Math.random() * FLOATERS.length)];
+  el.style.setProperty("--x", Math.random() * 100 + "%");
+  el.style.setProperty("--dur", (14 + Math.random() * 20) + "s");
+  el.style.setProperty("--delay", (Math.random() * 18) + "s");
+  el.style.setProperty("--size", (16 + Math.random() * 18) + "px");
+  floaterBox.appendChild(el);
+}
+
+// Ticker
+const tickerItems = [
+  {t:"📈 ROAS 3.2x",c:"#00e85e"},{t:"💰 Profit +47%",c:"#3b82f6"},{t:"📦 2,847 comenzi",c:"#f59e0b"},
+  {t:"🚀 Scalare 10x",c:"#a855f7"},{t:"💎 Marjă 32%",c:"#00e85e"},{t:"🔥 Revenue €148K",c:"#f43f5e"},
+  {t:"📊 CTR 4.8%",c:"#3b82f6"},{t:"⚡ CPA €12.40",c:"#f59e0b"},{t:"💳 AOV €67",c:"#a855f7"},
+  {t:"🎯 Conv. 4.2%",c:"#00e85e"},
+];
+const track = document.getElementById("tickerTrack");
+for (let r = 0; r < 3; r++) tickerItems.forEach(i => { const s = document.createElement("span"); s.style.color = i.c; s.textContent = i.t; track.appendChild(s); });
+
+// Counters
+document.querySelectorAll(".counter").forEach(el => {
+  const end = parseInt(el.dataset.end);
+  const suffix = el.dataset.suffix || "";
+  let val = 0;
+  const step = end / 120;
+  const timer = setInterval(() => {
+    val += step;
+    if (val >= end) { val = end; clearInterval(timer); }
+    el.textContent = Math.floor(val).toLocaleString() + suffix;
+  }, 16);
+});
+
+// Mini charts
+function drawChart(id, data, color) {
+  const svg = document.getElementById(id);
+  const h = 50, max = Math.max(...data), min = Math.min(...data), range = max - min || 1;
+  const w = 100 / (data.length - 1);
+  const pts = data.map((v, i) => `${i * w},${h - ((v - min) / range) * (h - 4) - 2}`).join(" ");
+  const fill = `${pts} 100,${h} 0,${h}`;
+  svg.innerHTML = `
+    <defs><linearGradient id="g-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity=".3"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    <polygon points="${fill}" fill="url(#g-${id})" opacity=".6"/>
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  `;
+}
+drawChart("chart1", [20,35,25,45,40,60,55,75,70,90,85,110], "#00e85e");
+drawChart("chart2", [5,12,8,22,18,30,25,38,42,35,50,48], "#3b82f6");
+drawChart("chart3", [100,120,110,140,135,160,155,180,190,175,210,230], "#a855f7");
+
+// Bottom bars
+const bars = document.getElementById("bottomBars");
+for (let i = 0; i < 45; i++) {
+  const b = document.createElement("div");
+  b.className = "bar";
+  b.style.height = (15 + Math.random() * 85) + "%";
+  b.style.animationDelay = (i * 0.025) + "s";
+  bars.appendChild(b);
+}
+
+// ═══ AUTH LOGIC ═══
+
+// Tabs
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".auth-form").forEach(f => f.classList.remove("active"));
+    tab.classList.add("active");
+    const formId = tab.dataset.tab === "login" ? "loginForm" : "registerForm";
+    document.getElementById(formId).classList.add("active");
+    hideMsg();
+  });
+});
+
+// Login
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("loginBtn");
+  btn.classList.add("loading"); btn.disabled = true; hideMsg();
+  try {
+    const res = await fetch(API + "/auth/login", {
+      method: "POST", headers: {"Content-Type":"application/json"}, credentials: "include",
+      body: JSON.stringify({ login: document.getElementById("loginUser").value.trim(), password: document.getElementById("loginPass").value }),
+    });
+    const data = await res.json();
+    if (!res.ok) { showMsg(data.error, "error"); return; }
+    localStorage.setItem("cod_token", data.accessToken);
+    localStorage.setItem("cod_user", JSON.stringify(data.user));
+    showMsg("Autentificare reușită!", "success");
+    setTimeout(() => window.location.href = "index.html", 500);
+  } catch { showMsg("Eroare de conexiune. Backend-ul rulează?", "error"); }
+  finally { btn.classList.remove("loading"); btn.disabled = false; }
+});
+
+// Register
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("regBtn");
+  btn.classList.add("loading"); btn.disabled = true; hideMsg();
+  const pw = document.getElementById("regPass").value;
+  if (pw.length < 6 || !/\d/.test(pw)) { showMsg("Parola: minim 6 caractere și o cifră.", "error"); btn.classList.remove("loading"); btn.disabled = false; return; }
+  try {
+    const res = await fetch(API + "/auth/register", {
+      method: "POST", headers: {"Content-Type":"application/json"}, credentials: "include",
+      body: JSON.stringify({
+        username: document.getElementById("regUser").value.trim(),
+        email: document.getElementById("regEmail").value.trim(), password: pw,
+        display_name: document.getElementById("regName").value.trim() || undefined,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { showMsg(data.details ? data.details.map(d=>d.message).join(" ") : data.error, "error"); return; }
+    localStorage.setItem("cod_token", data.accessToken);
+    localStorage.setItem("cod_user", JSON.stringify(data.user));
+    showMsg("Cont creat!", "success");
+    setTimeout(() => window.location.href = "index.html", 500);
+  } catch { showMsg("Eroare de conexiune.", "error"); }
+  finally { btn.classList.remove("loading"); btn.disabled = false; }
+});
+
+// Forgot password
+document.getElementById("forgotForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById("forgotBtn");
+  btn.classList.add("loading"); btn.disabled = true; hideMsg();
+  try {
+    const res = await fetch(API + "/auth/forgot-password", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ email: document.getElementById("forgotEmail").value.trim() }),
+    });
+    const data = await res.json();
+    showMsg(data.message || "Dacă emailul există, vei primi un link de resetare.", "success");
+  } catch { showMsg("Eroare de conexiune.", "error"); }
+  finally { btn.classList.remove("loading"); btn.disabled = false; }
+});
+
+function showForgot(e) {
+  e.preventDefault();
+  document.querySelectorAll(".auth-form").forEach(f => f.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("forgotForm").classList.add("active");
+  hideMsg();
+}
+
+function backToLogin(e) {
+  e.preventDefault();
+  document.querySelectorAll(".auth-form").forEach(f => f.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector('[data-tab="login"]').classList.add("active");
+  document.getElementById("loginForm").classList.add("active");
+  hideMsg();
+}
+
+function showMsg(t, tp) { const e = document.getElementById("authMsg"); e.textContent = t; e.className = "msg show " + tp; }
+function hideMsg() { document.getElementById("authMsg").className = "msg"; }
+function togglePw(id, b) { const i = document.getElementById(id); i.type = i.type === "password" ? "text" : "password"; b.textContent = i.type === "password" ? "SHOW" : "HIDE"; }
+</script>
+</body>
+</html>

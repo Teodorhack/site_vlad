@@ -1,0 +1,123 @@
+/* ============================================================
+   DESIGN SYSTEM — Cinematic Dark Luxury
+   Inspired by: Stripe, Linear, Raycast, Vercel
+   Typography: Satoshi (geometric) + Clash Display (impact)
+   ============================================================ */
+
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@400,500,600,700&f[]=jet-brains-mono@400,500&display=swap');
+
+:root {
+  /* ── Surface system — 5 elevation layers ────────── */
+  --surface-0: #050505;
+  --surface-1: #0a0a0b;
+  --surface-2: #101012;
+  --surface-3: #161618;
+  --surface-4: #1c1c1f;
+
+  /* ── Border system ───────────────────────────────── */
+  --edge-0: rgba(255,255,255,0.04);
+  --edge-1: rgba(255,255,255,0.06);
+  --edge-2: rgba(255,255,255,0.10);
+  --edge-3: rgba(255,255,255,0.14);
+
+  /* ── Text hierarchy ──────────────────────────────── */
+  --ink-100: #ffffff;
+  --ink-90: #f0f0f0;
+  --ink-70: #a0a0a8;
+  --ink-50: #6e6e78;
+  --ink-30: #44444d;
+  --ink-20: #2e2e35;
+
+  /* ── Accent — electric emerald ───────────────────── */
+  --glow: #00e85e;
+  --glow-dim: rgba(0,232,94,0.06);
+  --glow-mid: rgba(0,232,94,0.14);
+  --glow-bright: rgba(0,232,94,0.25);
+  --glow-solid: #00ff66;
+
+  /* ── Signal colors ───────────────────────────────── */
+  --signal-blue: #3b82f6;
+  --signal-violet: #a855f7;
+  --signal-rose: #f43f5e;
+  --signal-amber: #f59e0b;
+  --signal-orange: #f97316;
+  --signal-red: #ef4444;
+
+  /* ── Layout ──────────────────────────────────────── */
+  --sidebar-w: 280px;
+  --header-h: 54px;
+
+  /* ── Typography ──────────────────────────────────── */
+  --font-body: 'Satoshi', -apple-system, sans-serif;
+  --font-display: 'Clash Display', 'Satoshi', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+  /* ── Radii ───────────────────────────────────────── */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 18px;
+  --r-full: 999px;
+
+  /* ── Motion ──────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur: 0.25s;
+  --dur-slow: 0.5s;
+}
+
+/* ── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+  background: var(--surface-0);
+  color: var(--ink-90);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ── Film grain overlay ────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+::selection { background: var(--glow-mid); color: var(--ink-100); }
+
+/* ── Utility glow keyframes ────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 1; box-shadow: 0 0 20px var(--glow-mid); }
+  50% { opacity: 0.6; box-shadow: 0 0 8px var(--glow-dim); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: var(--edge-1); }
+  50% { border-color: var(--glow-mid); }
+}

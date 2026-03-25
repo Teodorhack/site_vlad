@@ -1,0 +1,307 @@
+/* ============================================================
+   COMPONENTS — Premium content blocks with depth
+   ============================================================ */
+
+/* ── Keypoints — glass cards ───────────────────────── */
+.keypoint {
+  padding: 18px 22px;
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  border-radius: var(--r-lg);
+  margin-bottom: 10px;
+  transition: all 0.3s var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.keypoint::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 2px;
+  background: var(--glow);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.keypoint:hover {
+  border-color: var(--edge-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.keypoint:hover::before { opacity: 1; }
+
+.keypoint-label {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--glow);
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.keypoint-text {
+  font-size: 0.84rem;
+  color: var(--ink-70);
+  line-height: 1.75;
+}
+
+/* ── Steps — numbered with glow ────────────────────── */
+.step-item {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--edge-0);
+  transition: all 0.2s;
+}
+
+.step-item:last-child { border-bottom: none; }
+.step-item:hover { padding-left: 4px; }
+
+.step-number {
+  width: 28px; height: 28px; min-width: 28px;
+  border-radius: 50%;
+  background: var(--glow);
+  color: var(--surface-0);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem; font-weight: 700;
+  box-shadow: 0 0 12px var(--glow-dim);
+  flex-shrink: 0;
+}
+
+.step-text {
+  font-size: 0.86rem;
+  line-height: 1.7;
+  color: var(--ink-70);
+  padding-top: 3px;
+}
+
+/* ── Tables — minimal glass ────────────────────────── */
+.table-scroll {
+  overflow-x: auto;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--edge-1);
+  background: var(--surface-1);
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.comparison-table th {
+  background: var(--surface-2);
+  color: var(--ink-50);
+  font-family: var(--font-mono);
+  font-size: 0.6rem; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 12px 18px;
+  text-align: left;
+  border-bottom: 1px solid var(--edge-1);
+}
+
+.comparison-table td {
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--edge-0);
+  color: var(--ink-70);
+  vertical-align: top;
+  transition: background 0.15s;
+}
+
+.comparison-table tr:last-child td { border-bottom: none; }
+.comparison-table tr:hover td { background: rgba(255,255,255,0.02); }
+.row-label { color: var(--ink-90); font-weight: 500; }
+
+/* ── Framework — stages with depth ─────────────────── */
+.framework-stage {
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  border-radius: var(--r-lg);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-out);
+}
+
+.framework-stage:hover {
+  border-color: var(--edge-2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+}
+
+.stage-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 22px;
+  background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid var(--edge-0);
+}
+
+.stage-number {
+  width: 30px; height: 30px; min-width: 30px;
+  border-radius: 50%;
+  background: var(--glow); color: var(--surface-0);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; font-size: 0.75rem;
+  box-shadow: 0 0 12px var(--glow-dim);
+}
+
+.stage-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: -0.01em;
+}
+
+.stage-body { padding: 18px 22px; }
+.stage-desc { font-size: 0.84rem; color: var(--ink-70); margin-bottom: 14px; line-height: 1.75; }
+
+.stage-detail { font-size: 0.78rem; color: var(--ink-50); margin-bottom: 6px; }
+.detail-label { font-weight: 600; color: var(--ink-90); margin-right: 4px; }
+
+.stage-detail.target {
+  color: var(--glow); font-family: var(--font-mono); font-size: 0.68rem;
+  margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--edge-0);
+}
+
+.stage-arrow { text-align: center; font-size: 1rem; color: var(--glow); padding: 2px 0; opacity: 0.2; }
+
+/* ── Alerts — premium warning/tip ──────────────────── */
+.alert-block {
+  border-radius: var(--r-lg);
+  padding: 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.alert-warning {
+  background: rgba(249,115,22,0.04);
+  border: 1px solid rgba(249,115,22,0.12);
+  border-left: 3px solid var(--signal-orange);
+}
+
+.alert-tip {
+  background: var(--glow-dim);
+  border: 1px solid var(--glow-mid);
+  border-left: 3px solid var(--glow);
+}
+
+.alert-title { font-weight: 600; font-size: 0.86rem; margin-bottom: 8px; }
+.alert-warning .alert-title { color: var(--signal-orange); }
+.alert-tip .alert-title { color: var(--glow); }
+.alert-content { font-size: 0.84rem; color: var(--ink-70); line-height: 1.75; }
+.alert-content p { margin-bottom: 6px; }
+.alert-content p:last-child { margin-bottom: 0; }
+
+/* ── Timeline ──────────────────────────────────────── */
+.timeline-period {
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  border-radius: var(--r-lg);
+  padding: 22px;
+  margin-bottom: 12px;
+  transition: all 0.3s var(--ease-out);
+}
+
+.timeline-period:hover {
+  border-color: var(--edge-2);
+  transform: translateY(-1px);
+}
+
+.period-label {
+  font-family: var(--font-mono); font-size: 0.6rem; font-weight: 600;
+  color: var(--glow); text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--edge-0);
+}
+
+.period-objectives { list-style: none; margin-bottom: 14px; }
+.period-objectives li {
+  font-size: 0.82rem; color: var(--ink-90); padding: 5px 0 5px 22px; position: relative;
+}
+.period-objectives li::before {
+  content: '→'; position: absolute; left: 0;
+  color: var(--glow); font-family: var(--font-mono); font-size: 0.75rem;
+}
+
+.period-expectation {
+  font-size: 0.78rem; color: var(--ink-30); font-style: italic;
+  padding-top: 10px; border-top: 1px solid var(--edge-0); line-height: 1.65;
+}
+
+/* ── Schedule ──────────────────────────────────────── */
+.schedule-row {
+  display: flex; gap: 18px; padding: 12px 0;
+  border-bottom: 1px solid var(--edge-0);
+}
+.schedule-row:last-child { border-bottom: none; }
+
+.schedule-time {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+  color: var(--glow); min-width: 56px; padding-top: 3px;
+}
+
+.schedule-task { font-weight: 600; font-size: 0.86rem; margin-bottom: 4px; }
+.schedule-details { font-size: 0.78rem; color: var(--ink-50); line-height: 1.65; }
+
+/* ── Checklist — premium toggles ───────────────────── */
+.checklist-progress {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+
+.progress-bar {
+  flex: 1; height: 3px;
+  background: var(--edge-1);
+  border-radius: 2px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; width: 0%;
+  background: var(--glow);
+  border-radius: 2px;
+  transition: width 0.4s var(--ease-out);
+  box-shadow: 0 0 8px var(--glow-dim);
+}
+
+.progress-text {
+  font-family: var(--font-mono); font-size: 0.65rem; font-weight: 500;
+  color: var(--ink-30); min-width: 48px;
+}
+
+.checklist-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 8px 12px; border-radius: var(--r-md);
+  cursor: pointer; transition: all 0.15s var(--ease-out);
+}
+
+.checklist-item:hover { background: var(--surface-2); }
+.checklist-item input[type="checkbox"] { display: none; }
+
+.check-mark {
+  width: 18px; height: 18px; min-width: 18px;
+  border: 1.5px solid var(--edge-2);
+  border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s var(--ease-out); margin-top: 2px;
+}
+
+.checklist-item input:checked + .check-mark {
+  background: var(--glow); border-color: var(--glow);
+  box-shadow: 0 0 8px var(--glow-dim);
+}
+
+.checklist-item input:checked + .check-mark::after {
+  content: '✓'; color: var(--surface-0); font-size: 0.65rem; font-weight: 700;
+}
+
+.checklist-item input:checked ~ .check-text {
+  text-decoration: line-through; color: var(--ink-20);
+}
+
+.check-text { font-size: 0.84rem; line-height: 1.5; }
+
+.critical-badge {
+  font-family: var(--font-mono); font-size: 0.48rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px;
+  padding: 2px 6px; border-radius: 4px;
+  background: rgba(239,68,68,0.1); color: var(--signal-red); margin-top: 2px;
+}

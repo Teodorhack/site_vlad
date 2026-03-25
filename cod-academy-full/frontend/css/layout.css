@@ -1,0 +1,191 @@
+/* ============================================================
+   LAYOUT — Cinematic app shell with depth
+   ============================================================ */
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Ambient background orbs ───────────────────────── */
+.app-layout::before {
+  content: '';
+  position: fixed;
+  top: -30%; left: -10%;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(0,232,94,0.04) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  animation: float 25s ease-in-out infinite;
+}
+
+.app-layout::after {
+  content: '';
+  position: fixed;
+  bottom: -20%; right: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(59,130,246,0.03) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  animation: float 30s ease-in-out infinite reverse;
+}
+
+/* ── Header — frosted glass with glow line ─────────── */
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: rgba(5,5,5,0.7);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border-bottom: 1px solid var(--edge-0);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 100;
+  gap: 16px;
+}
+
+/* Animated glow line under header */
+.top-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--glow-dim) 20%,
+    var(--glow-mid) 50%,
+    var(--glow-dim) 80%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+.menu-toggle {
+  display: none;
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  color: var(--ink-70);
+  padding: 6px 10px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all var(--dur) var(--ease-out);
+}
+
+.menu-toggle:hover {
+  background: var(--surface-3);
+  border-color: var(--edge-2);
+  color: var(--ink-90);
+}
+
+/* ── Brand ─────────────────────────────────────────── */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--glow);
+  box-shadow: 0 0 12px var(--glow-mid), 0 0 24px var(--glow-dim);
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--ink-100);
+}
+
+/* ── Search — glass morphism ───────────────────────── */
+.header-search {
+  flex: 1;
+  max-width: 360px;
+  margin-left: auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  border-radius: var(--r-full);
+  color: var(--ink-90);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  outline: none;
+  transition: all var(--dur) var(--ease-out);
+}
+
+.search-input:focus {
+  border-color: var(--glow-mid);
+  background: var(--surface-3);
+  box-shadow: 0 0 0 3px var(--glow-dim), 0 0 20px var(--glow-dim);
+}
+
+.search-input::placeholder {
+  color: var(--ink-30);
+  font-weight: 400;
+}
+
+/* ── User menu ─────────────────────────────────────── */
+.header-user {
+  display: flex; align-items: center; gap: 12px; margin-left: 12px;
+}
+
+.user-name {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, var(--glow), var(--signal-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logout-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--edge-1);
+  color: var(--ink-50);
+  width: 30px; height: 30px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  font-size: 0.7rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--dur) var(--ease-out);
+}
+
+.logout-btn:hover {
+  border-color: var(--signal-red);
+  color: var(--signal-red);
+  background: rgba(239,68,68,0.08);
+  box-shadow: 0 0 12px rgba(239,68,68,0.1);
+}
+
+/* ── Main content ──────────────────────────────────── */
+.main-content {
+  flex: 1;
+  height: 100vh;
+  padding-top: var(--header-h);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--edge-1) transparent;
+}
+
+.main-content::-webkit-scrollbar { width: 5px; }
+.main-content::-webkit-scrollbar-track { background: transparent; }
+.main-content::-webkit-scrollbar-thumb {
+  background: var(--edge-1);
+  border-radius: 3px;
+}
+.main-content::-webkit-scrollbar-thumb:hover { background: var(--edge-2); }
