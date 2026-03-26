@@ -45,13 +45,12 @@ async function register(req, res) {
       "INSERT INTO users (username, email, password, display_name) VALUES (?, ?, ?, ?)",
       [username, email, hashedPassword, display_name || username]
     );
-    saveDatabase();
 
     const result = db.exec("SELECT last_insert_rowid()");
     const userId = result[0].values[0][0];
 
     // Create default settings
-    db.run("INSERT INTO user_settings (user_id) VALUES (?)", [userId]);
+    db.run("INSERT OR IGNORE INTO user_settings (user_id) VALUES (?)", [userId]);
     saveDatabase();
 
     const accessToken = generateAccessToken(userId);
@@ -250,8 +249,6 @@ async function updateProfile(req, res) {
   }
 }
 
-module.exports = { register, login, refresh, logout, getMe, updateProfile, forgotPassword, resetPassword };
-
 // POST /api/auth/forgot-password
 function forgotPassword(req, res) {
   try {
@@ -271,15 +268,6 @@ function forgotPassword(req, res) {
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
 
     // Store reset token
-    db.run(`CREATE TABLE IF NOT EXISTS password_resets (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      token TEXT UNIQUE NOT NULL,
-      expires_at TEXT NOT NULL,
-      used INTEGER DEFAULT 0,
-      created_at TEXT DEFAULT (datetime('now'))
-    )`);
-
     db.run("INSERT INTO password_resets (user_id, token, expires_at) VALUES (?, ?, ?)",
       [userId, token, expiresAt]);
     saveDatabase();
@@ -332,3 +320,5 @@ async function resetPassword(req, res) {
     res.status(500).json({ error: "Eroare server." });
   }
 }
+
+module.exports = { register, login, refresh, logout, getMe, updateProfile, forgotPassword, resetPassword };

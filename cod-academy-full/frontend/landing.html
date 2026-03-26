@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COD Academy — Învață E-Commerce Cash on Delivery în România</title>
+  <meta name="description" content="Program complet de e-commerce COD România. De la zero la primele venituri. 12 module, 50+ lecții, strategii testate de studenți reali.">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    ::selection{background:#00FF8820;color:#00FF88}
+
+    body{
+      font-family:'Outfit',sans-serif;
+      background:#050505;
+      color:#E8E8E8;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    /* Grain */
+    .grain{position:fixed;inset:0;pointer-events:none;z-index:1000;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E")}
+
+    /* Glow orb follows mouse */
+    .glow-orb{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#00FF8806,transparent 70%);pointer-events:none;transition:left .6s ease,top .6s ease;z-index:0;transform:translate(-50%,-50%)}
+
+    /* ─── Sections ─── */
+    .s{padding:120px 80px;position:relative;z-index:1}
+    .s-label{font-family:'Space Mono',monospace;font-size:12px;color:#00FF88;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+    .s-title{font-size:clamp(28px,3.5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.03em;max-width:750px}
+    .s-sub{font-size:17px;color:#666;max-width:520px;line-height:1.75;margin-top:20px}
+    .green{color:#00FF88}
+    .red{color:#FF4444}
+
+    /* ─── FadeIn on scroll ─── */
+    .fade{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+    .fade.visible{opacity:1;transform:translateY(0)}
+
+    /* ─── Side Nav Dots ─── */
+    .side-nav{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:16px;z-index:100}
+    .nav-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid #333;cursor:pointer;transition:all .3s;position:relative}
+    .nav-dot.active{background:#00FF88;border-color:#00FF88;box-shadow:0 0 12px #00FF8840}
+    .nav-dot:hover{border-color:#00FF88;transform:scale(1.3)}
+    .nav-dot-label{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:11px;font-family:'Space Mono',monospace;color:#555;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none}
+    .nav-dot:hover .nav-dot-label{opacity:1;color:#00FF88}
+
+    /* ─── Tags ─── */
+    .tag{display:inline-block;padding:4px 12px;border-radius:100px;font-size:12px;font-family:'Space Mono',monospace;border:1px solid #1A1A1A;color:#666}
+    .tag-green{border-color:#00FF8830;color:#00FF88;background:#00FF8808}
+
+    /* ─── Cards ─── */
+    .card{background:#0A0A0A;border:1px solid #1A1A1A;border-radius:16px;padding:32px;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00FF88,transparent);opacity:0;transition:opacity .4s}
+    .card:hover{border-color:#00FF8830;transform:translateY(-4px);box-shadow:0 20px 60px #00FF8808}
+    .card:hover::before{opacity:1}
+
+    /* ─── CTA Buttons ─── */
+    .cta{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:#00FF88;color:#050505;font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;border:none;border-radius:12px;cursor:pointer;transition:all .3s;text-decoration:none}
+    .cta:hover{transform:translateY(-2px);box-shadow:0 12px 40px #00FF8830}
+    .cta-outline{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:transparent;color:#00FF88;font-family:'Outfit',sans-serif;font-weight:600;font-size:16px;border:1.5px solid #00FF8840;border-radius:12px;cursor:pointer;transition:all .3s;text-decoration:none}
+    .cta-outline:hover{border-color:#00FF88;background:#00FF8808}
+
+    /* ─── Process Steps ─── */
+    .step{display:flex;gap:24px;align-items:flex-start;padding:28px 0;border-bottom:1px solid #111}
+    .step-num{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;color:#00FF8815;line-height:1;min-width:80px;transition:color .3s}
+    .step:hover .step-num{color:#00FF8840}
+    .step-title{font-size:20px;font-weight:700;margin-bottom:6px}
+    .step-desc{font-size:14px;color:#777;line-height:1.7}
+
+    /* ─── Module Grid ─── */
+    .mod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .mod-card{background:#0A0A0A;border:1px solid #1A1A1A;border-radius:14px;padding:24px;transition:all .3s cubic-bezier(.16,1,.3,1)}
+    .mod-card:hover{border-color:#00FF8830;transform:translateY(-3px)}
+    .mod-card-icon{font-size:28px;margin-bottom:10px}
+    .mod-card-num{font-family:'Space Mono',monospace;font-size:10px;color:#444;letter-spacing:1px;margin-bottom:4px}
+    .mod-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+    .mod-card p{font-size:13px;color:#555;line-height:1.6}
+
+    /* ─── Category tabs ─── */
+    .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+    .cat-tab{padding:6px 16px;border-radius:100px;font-size:13px;font-family:'Space Mono',monospace;border:1px solid #1A1A1A;color:#666;cursor:pointer;transition:all .3s;background:transparent}
+    .cat-tab:hover{border-color:#00FF8850;color:#ccc}
+    .cat-tab.active{border-color:#00FF8830;color:#00FF88;background:#00FF8808}
+
+    /* ─── Video Grid — In-place Playable ─── */
+    .vid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+    .vid-item{position:relative;border-radius:12px;overflow:hidden;border:1px solid #1A1A1A;transition:all .3s cubic-bezier(.16,1,.3,1);background:#0A0A0A}
+    .vid-item:hover{border-color:#00FF8830;transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,255,136,.06)}
+    .vid-thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;cursor:pointer}
+    .vid-thumb-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+    .vid-item:hover .vid-thumb-wrap img{transform:scale(1.05)}
+    .vid-play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);transition:background .3s}
+    .vid-item:hover .vid-play-overlay{background:rgba(0,0,0,.1)}
+    .vid-play-btn{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:all .3s;color:#fff;font-size:18px}
+    .vid-item:hover .vid-play-btn{background:#00FF88;color:#050505;box-shadow:0 0 24px #00FF8840}
+    .vid-embed{width:100%;aspect-ratio:16/9;border:none;display:block}
+    .vid-info{padding:12px 14px}
+    .vid-title{font-size:13px;font-weight:600;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* ─── FAQ ─── */
+    .faq-item{background:#0A0A0A;border:1px solid #1A1A1A;border-radius:12px;overflow:hidden;margin-bottom:8px;transition:border-color .2s}
+    .faq-item:hover{border-color:#1f1f1f}
+    .faq-q{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;cursor:pointer;font-size:15px;font-weight:600;gap:12px;transition:color .2s}
+    .faq-q:hover{color:#00FF88}
+    .faq-chevron{font-size:18px;color:#555;transition:transform .3s cubic-bezier(.16,1,.3,1);flex-shrink:0}
+    .faq-item.open .faq-chevron{transform:rotate(45deg);color:#00FF88}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}
+    .faq-item.open .faq-a{max-height:300px}
+    .faq-a-inner{padding:0 20px 18px;font-size:14px;color:#777;line-height:1.8}
+
+    /* ─── Guarantee Box ─── */
+    .guarantee{background:linear-gradient(135deg,#00FF8808,#00FF8803);border:1px solid #00FF8820;border-radius:16px;padding:32px;text-align:center}
+
+    /* ─── Footer ─── */
+    .footer{padding:40px 80px;border-top:1px solid #111;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+    .footer-text{font-family:'Space Mono',monospace;font-size:12px;color:#333}
+    .footer-links{display:flex;gap:20px}
+    .footer-links a{color:#555;text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:#00FF88}
+
+    /* ─── Scroll indicator ─── */
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .scroll-ind{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:float 2s ease-in-out infinite}
+    .scroll-ind span{font-size:11px;color:#333;font-family:'Space Mono',monospace}
+    .scroll-ind-line{width:1px;height:30px;background:linear-gradient(to bottom,#333,transparent)}
+
+    /* ─── Bonus cards ─── */
+    .bonus-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .bonus-video{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;margin-top:8px;border:1px solid #1A1A1A}
+    .bonus-video iframe{position:absolute;top:0;left:0;width:100%;height:100%}
+    .bonus-link{display:inline-flex;align-items:center;gap:6px;color:#00FF88;font-size:13px;font-weight:700;text-decoration:none;transition:gap .2s;margin-top:8px}
+    .bonus-link:hover{gap:10px}
+
+    /* ─── Responsive ─── */
+    @media(max-width:768px){
+      .s{padding:60px 20px}
+      .side-nav{display:none}
+      .footer{padding:24px 20px}
+      .vid-grid{grid-template-columns:1fr 1fr}
+      .mod-grid{grid-template-columns:1fr}
+      .test-grid{grid-template-columns:1fr}
+      .bonus-grid{grid-template-columns:1fr}
+      .step{flex-direction:column;gap:12px}
+      .step-num{font-size:32px;min-width:auto}
+      .hero-btns{flex-direction:column}
+    }
+    @media(max-width:480px){
+      .vid-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="glow-orb" id="glowOrb"></div>
+
+<!-- ═══ Side Nav ═══ -->
+<div class="side-nav" id="sideNav">
+  <div class="nav-dot active" data-section="hero"><span class="nav-dot-label">Intro</span></div>
+  <div class="nav-dot" data-section="problem"><span class="nav-dot-label">Problema</span></div>
+  <div class="nav-dot" data-section="modules"><span class="nav-dot-label">Module</span></div>
+  <div class="nav-dot" data-section="videos"><span class="nav-dot-label">Video-uri</span></div>
+  <div class="nav-dot" data-section="testimonials"><span class="nav-dot-label">Rezultate</span></div>
+  <div class="nav-dot" data-section="bonuses"><span class="nav-dot-label">Bonusuri</span></div>
+  <div class="nav-dot" data-section="faq"><span class="nav-dot-label">FAQ</span></div>
+  <div class="nav-dot" data-section="cta"><span class="nav-dot-label">Start</span></div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="s" id="hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative">
+  <div class="fade" data-delay="0">
+    <div class="s-label">COD Academy — E-Commerce România</div>
+  </div>
+  <div class="fade" data-delay="0.15">
+    <h1 class="s-title" style="font-size:clamp(36px,5.5vw,72px);max-width:800px">
+      Învață să construiești un<br>
+      magazin online <span class="green">profitabil</span><br>
+      cu metoda COD.
+    </h1>
+  </div>
+  <div class="fade" data-delay="0.3">
+    <p class="s-sub">De la zero la primele venituri. Program testat de studenți reali din România. 12 module, 50+ lecții, strategii practice, suport dedicat.</p>
+  </div>
+  <div class="fade hero-btns" data-delay="0.45" style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+    <a href="login.html" class="cta">Începe acum →</a>
+    <a href="#videos" class="cta-outline">Vezi video-uri</a>
+  </div>
+  <div class="fade" data-delay="0.6" style="display:flex;gap:12px;margin-top:48px;flex-wrap:wrap">
+    <span class="tag tag-green">2,847+ studenți</span>
+    <span class="tag tag-green">89% rata succes</span>
+    <span class="tag tag-green">148K€ profit generat</span>
+    <span class="tag">12 Module</span>
+    <span class="tag">50+ Lecții</span>
+    <span class="tag">COD România</span>
+  </div>
+  <div class="scroll-ind">
+    <span>scroll</span>
+    <div class="scroll-ind-line"></div>
+  </div>
+</section>
+
+<!-- ═══ PROBLEM / SOLUTION ═══ -->
+<section class="s" id="problem">
+  <div class="fade">
+    <div class="s-label">De ce COD?</div>
+    <h2 class="s-title">
+      Românii <span class="red">nu plătesc online.</span><br>
+      Cash on Delivery<br>
+      <span class="green">rezolvă asta.</span>
+    </h2>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:48px">
+    <div class="fade card" data-delay="0">
+      <div style="font-size:13px;color:#FF4444;font-family:'Space Mono',monospace;margin-bottom:12px">PROBLEMA</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">70% din clienți refuză cardul</div>
+      <div style="font-size:14px;color:#555;line-height:1.7">România are una dintre cele mai mici rate de plată online din Europa. Magazinele tradiționale pierd mii de comenzi.</div>
+    </div>
+    <div class="fade card" data-delay="0.15">
+      <div style="font-size:13px;color:#00FF88;font-family:'Space Mono',monospace;margin-bottom:12px">SOLUȚIA</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">Plata la livrare = conversii x3</div>
+      <div style="font-size:14px;color:#555;line-height:1.7">Clientul plătește curierului la primirea coletului. Zero barieră de încredere. Rata de conversie crește dramatic.</div>
+    </div>
+    <div class="fade card" data-delay="0.3">
+      <div style="font-size:13px;color:#00FF88;font-family:'Space Mono',monospace;margin-bottom:12px">REZULTAT</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px">Poți începe fără stoc, fără experiență</div>
+      <div style="font-size:14px;color:#555;line-height:1.7">Fulfillment centres se ocupă de tot. Tu faci marketing, ei trimit coletele. Investiție minimă, risc controlat.</div>
+    </div>
+  </div>
+  <div class="fade" data-delay="0.2" style="margin-top:40px;border-radius:16px;overflow:hidden;border:1px solid #1A1A1A;max-width:700px">
+    <div style="position:relative;padding-bottom:56.25%;height:0">
+      <iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODULES ═══ -->
+<section class="s" id="modules">
+  <div class="fade">
+    <div class="s-label">Curriculum</div>
+    <h2 class="s-title">12 module.<br><span class="green">Zero bullshit.</span></h2>
+    <p class="s-sub">Fiecare modul te duce mai aproape de primul profit. De la fundamente la scalare avansată.</p>
+  </div>
+  <div class="mod-grid" style="margin-top:48px">
+    <div class="fade mod-card" data-delay="0"><div class="mod-card-icon">🧠</div><div class="mod-card-num">MODUL 01</div><h4>Fundamente & Mindset</h4><p>Tot ce trebuie să înțelegi înainte de a investi primul euro.</p></div>
+    <div class="fade mod-card" data-delay="0.05"><div class="mod-card-icon">🔍</div><div class="mod-card-num">MODUL 02</div><h4>Research & Validare</h4><p>Cum găsești produse câștigătoare și le validezi rapid.</p></div>
+    <div class="fade mod-card" data-delay="0.1"><div class="mod-card-icon">📦</div><div class="mod-card-num">MODUL 03</div><h4>Import & Furnizori</h4><p>China, România, UE — de unde cumperi, cum negociezi.</p></div>
+    <div class="fade mod-card" data-delay="0.15"><div class="mod-card-icon">🛒</div><div class="mod-card-num">MODUL 04</div><h4>Magazin & Conversie</h4><p>Shopify, pagina produs, checkout COD optimizat.</p></div>
+    <div class="fade mod-card" data-delay="0.2"><div class="mod-card-icon">📣</div><div class="mod-card-num">MODUL 05</div><h4>Facebook & TikTok Ads</h4><p>Campanii, testare, scalare — strategii testate.</p></div>
+    <div class="fade mod-card" data-delay="0.25"><div class="mod-card-icon">🚚</div><div class="mod-card-num">MODUL 06</div><h4>Fulfillment & Logistică</h4><p>Centre fulfillment, curierat, procese optimizate.</p></div>
+    <div class="fade mod-card" data-delay="0.3"><div class="mod-card-icon">📊</div><div class="mod-card-num">MODUL 07</div><h4>KPI & Tracking Financiar</h4><p>Ce numere contează zilnic pentru profit maxim.</p></div>
+    <div class="fade mod-card" data-delay="0.35"><div class="mod-card-icon">💰</div><div class="mod-card-num">MODUL 08</div><h4>Cashflow & Finance</h4><p>Gestionarea banilor — cel mai important modul.</p></div>
+    <div class="fade mod-card" data-delay="0.4"><div class="mod-card-icon">⚖️</div><div class="mod-card-num">MODUL 09</div><h4>Legal & Firmă</h4><p>SRL, CAEN, EORI, GDPR — 100% conform.</p></div>
+    <div class="fade mod-card" data-delay="0.45"><div class="mod-card-icon">📧</div><div class="mod-card-num">MODUL 10</div><h4>Email & SMS Marketing</h4><p>Automatizări care cresc profitul pasiv.</p></div>
+    <div class="fade mod-card" data-delay="0.5"><div class="mod-card-icon">🚀</div><div class="mod-card-num">MODUL 11</div><h4>Scalare & Creștere</h4><p>De la 1 produs la portofoliu profitabil.</p></div>
+    <div class="fade mod-card" data-delay="0.55"><div class="mod-card-icon">🧠</div><div class="mod-card-num">MODUL 12</div><h4>Gândirea Vânzătorului</h4><p>Psihologie, hooks, copywriting avansat.</p></div>
+  </div>
+</section>
+
+<!-- ═══ VIDEOS — IN-PLACE PLAYABLE, BY CATEGORY ═══ -->
+<section class="s" id="videos">
+  <div class="fade">
+    <div class="s-label">Direct de pe YouTube</div>
+    <h2 class="s-title">Nu vorbim.<br><span class="green">Arătăm.</span></h2>
+    <p class="s-sub">Video-uri reale de pe canalul ProfesorulVlad. Click pe oricare — rulează direct pe loc.</p>
+  </div>
+
+  <div class="fade" data-delay="0.1" style="margin-top:32px">
+    <div class="cat-tabs" id="catTabs"></div>
+    <div class="vid-grid" id="vidGrid"></div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="s" id="testimonials">
+  <div class="fade">
+    <div class="s-label">Rezultate reale</div>
+    <h2 class="s-title">Povești de succes.<br><span class="green">Fără filtre.</span></h2>
+    <p class="s-sub">Studenți reali, rezultate reale. Click pe video — rulează direct.</p>
+  </div>
+  <div class="vid-grid" style="margin-top:48px" id="testVidGrid"></div>
+</section>
+
+<!-- ═══ BONUSES ═══ -->
+<section class="s" id="bonuses">
+  <div class="fade">
+    <div class="s-label">Bonusuri exclusive</div>
+    <h2 class="s-title">Instrumente.<br><span class="green">Gratuite.</span></h2>
+    <p class="s-sub">Reduceri exclusive, tool-uri și resurse pentru studenții COD Academy.</p>
+  </div>
+  <div class="bonus-grid" style="margin-top:48px">
+    <div class="fade card" data-delay="0">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">📊</span><span class="tag tag-green">FREE</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Calculator Profitabilitate</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6">Calculatorul complet pentru analiza profitabilității produselor COD.</p>
+      <a href="https://drive.google.com/drive/folders/1gnSdgCOnCRcbamBb40QVfEN1jPQEXkee?usp=drive_link" target="_blank" rel="noopener" class="bonus-link">Accesează →</a>
+    </div>
+    <div class="fade card" data-delay="0.1">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">🛒</span><span class="tag" style="border-color:#f59e0b30;color:#f59e0b;background:#f59e0b08">97% OFF</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Shopify Deal Exclusiv</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6">Shopify la cel mai mic preț posibil — exclusiv prin noi.</p>
+      <a href="https://shopify.pxf.io/JK7vbr" target="_blank" rel="noopener" class="bonus-link">Accesează →</a>
+    </div>
+    <div class="fade card" data-delay="0.2">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">🔍</span><span class="tag" style="border-color:#a855f730;color:#a855f7;background:#a855f708">-20%</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Minea Spy Tool</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6">Cel mai bun tool de spy — reducere exclusivă pentru studenți.</p>
+      <a href="https://app.minea.com/en/plans/premium?ref=cashondelivery" target="_blank" rel="noopener" class="bonus-link">Accesează →</a>
+    </div>
+    <div class="fade card" data-delay="0.3">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">🏭</span><span class="tag tag-green">FREE</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Alibaba Furnizori</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6">Cea mai mare platformă de furnizori din lume.</p>
+      <a href="https://www.alibaba.com" target="_blank" rel="noopener" class="bonus-link">Accesează →</a>
+    </div>
+    <div class="fade card" data-delay="0.4">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">📹</span><span class="tag" style="border-color:#3b82f630;color:#3b82f6;background:#3b82f608">NEW</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Tutorial Facebook Ads</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:4px">Tutorial complet de Facebook Ads pentru COD România.</p>
+      <div class="bonus-video"><iframe src="https://www.youtube-nocookie.com/embed/XulvgOypz04?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+    </div>
+    <div class="fade card" data-delay="0.5">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">✅</span><span class="tag tag-green">FREE</span></div>
+      <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Tutorial Validare Produs</h4>
+      <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:4px">Cum validezi un produs înainte să investești.</p>
+      <div class="bonus-video"><iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="s" id="faq">
+  <div class="fade">
+    <div class="s-label">Întrebări frecvente</div>
+    <h2 class="s-title">Ai întrebări?<br><span class="green">Avem răspunsuri.</span></h2>
+  </div>
+  <div style="max-width:800px;margin-top:48px" id="faqList"></div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="s" id="cta" style="min-height:60vh;display:flex;flex-direction:column;justify-content:center">
+  <div class="fade">
+    <div class="s-label">Next steps</div>
+    <h2 class="s-title" style="font-size:clamp(32px,4vw,56px)">
+      Gata să<br><span class="green">începi?</span>
+    </h2>
+    <p class="s-sub">Alătură-te celor 2,847+ studenți care au ales drumul spre profit cu metoda COD.</p>
+  </div>
+  <div class="fade" data-delay="0.15" style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
+    <a href="login.html" class="cta">Începe acum — gratuit →</a>
+  </div>
+  <div class="fade guarantee" data-delay="0.3" style="margin-top:48px;max-width:500px">
+    <div style="font-size:24px;margin-bottom:8px">🤝</div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:8px">Acces complet. Zero risc.</div>
+    <div style="font-size:14px;color:#888;line-height:1.7">Acces la toate cele 12 module, 50+ lecții, instrumente exclusive, comunitate activă și suport dedicat.</div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-text">© 2026 COD Academy by ProfesorulVlad</div>
+  <div class="footer-links">
+    <a href="https://www.youtube.com/@profesorulvlad" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://linktw.in/NrzVVv" target="_blank" rel="noopener">Instagram</a>
+    <a href="login.html">Login platformă</a>
+  </div>
+</footer>
+
+<script>
+// ═══ VIDEO DATA — Categorized from ProfesorulVlad ═══
+var CATEGORIES = {
+  "Toate": null,
+  "Povești de Succes": "success",
+  "Tutoriale": "tutorial",
+  "Mindset": "mindset",
+};
+
+var VIDEOS = [
+  // Povești de succes
+  {id:"4JHgdgMEN94",title:"De pe șantier în Germania la 92.000 lei profit de acasă",cat:"success"},
+  {id:"SDHADprArT4",title:"N-a avut niciodată job. În 3 luni a făcut 6.000€ — Povestea lui Marco",cat:"success"},
+  {id:"uZoeQR-54xQ",title:"Îmi era frică să încep, acum fac 1500€ pe lună, și am 17 ani!",cat:"success"},
+  {id:"b3EekmACRyY",title:"\"Nu mă gândeam că o să am peste 250.000 vânzări\" — Povestea lui Bogdan",cat:"success"},
+  {id:"Dboj7ksSfP4",title:"\"Nu credeam că e posibil... până am făcut 50.000€\" — Povestea lui Andrei",cat:"success"},
+  {id:"WUNpMn--4AY",title:"Paul — 40.000 RON profit cu magazin online COD",cat:"success"},
+  {id:"YE25-Wa0J-c",title:"Rareș — 30.000 RON profit cu magazin online COD",cat:"success"},
+  {id:"tfUzxH3EXZY",title:"Codrin — 15.000 RON profit cu magazin online",cat:"success"},
+  {id:"QMFrYPwPCMo",title:"Alexandru — 15.000 RON profit cu magazin online",cat:"success"},
+  {id:"UtjDouCAa64",title:"Alexandru Ciurea — peste 100.000 lei cu magazin online",cat:"success"},
+  {id:"jtymGQGTlXA",title:"Luca — 20.000 RON profit cu magazin online",cat:"success"},
+  {id:"hts80cx-nZc",title:"Edi face 3000€/lună profit — am vorbit sincer în Dubai",cat:"success"},
+  {id:"zc47mTVnfBw",title:"De la 198.000 lei la 378.000 lei în 60 de zile",cat:"success"},
+  {id:"2arhJmudZTI",title:"De la 2000 lei pierderi la 15.000 lei profit lunar",cat:"success"},
+  {id:"XulvgOypz04",title:"De la manipulant la antreprenor în Dubai — Cum am reușit?",cat:"success"},
+  // Tutoriale
+  {id:"K8s-bs7BWpc",title:"Cum un obiect simplu poate să-ți facă 2000€ pe lună?",cat:"tutorial"},
+  {id:"98q7-gweAS4",title:"Cum să testezi și să validezi produse",cat:"tutorial"},
+  {id:"rohwT5vi8sA",title:"Cum să faci primele tale reclame",cat:"tutorial"},
+  {id:"LqEFKv9Hbp4",title:"Cum setezi prețul produselor tale?",cat:"tutorial"},
+  {id:"VEJRP7k1SpI",title:"Dai faliment dacă îți faci singur coletele",cat:"tutorial"},
+  {id:"1wbkdRp0Ito",title:"Centru de logistică sau depozit? Ce facem cu magazinul",cat:"tutorial"},
+  {id:"hGjNDjAxaIk",title:"Aceste 7 greșeli m-au costat peste 20.000€",cat:"tutorial"},
+  {id:"5XXLc0PojHw",title:"Top metode să faci bani online în 2025",cat:"tutorial"},
+  {id:"VzSqMF13CUE",title:"Cum folosim inteligența artificială pentru productivitate",cat:"tutorial"},
+  // Mindset
+  {id:"LOe5699XIBg",title:"De ce majoritatea românilor sunt săraci?",cat:"mindset"},
+  {id:"LxsCkiq7CYY",title:"Nimeni n-a manifestat vreodată bani fără muncă.",cat:"mindset"},
+  {id:"l2s0NLLx1HQ",title:"Bucură-te acum și regreți toată viața",cat:"mindset"},
+  {id:"5a873PZmIGQ",title:"De ce irosești timpul care îți poate face bani?",cat:"mindset"},
+  {id:"aVeprVtHpmY",title:"Merită să zbori business class?",cat:"mindset"},
+  {id:"r9FDzF9ABI0",title:"România, antreprenoriat, magazin online",cat:"mindset"},
+];
+
+var currentCat = null;
+
+// ═══ Render category tabs ═══
+function renderCatTabs() {
+  var tabs = document.getElementById('catTabs');
+  tabs.innerHTML = Object.keys(CATEGORIES).map(function(label) {
+    var val = CATEGORIES[label];
+    var cls = (val === currentCat) ? 'cat-tab active' : 'cat-tab';
+    return '<button class="' + cls + '" onclick="filterCat(' + (val ? "'" + val + "'" : 'null') + ')">' + label + '</button>';
+  }).join('');
+}
+
+function filterCat(cat) {
+  currentCat = cat;
+  renderCatTabs();
+  var filtered = cat ? VIDEOS.filter(function(v) { return v.cat === cat; }) : VIDEOS;
+  renderVidGrid('vidGrid', filtered);
+}
+
+// ═══ Render video grid — IN-PLACE PLAY ═══
+function renderVidGrid(containerId, videos) {
+  var container = document.getElementById(containerId);
+  container.innerHTML = videos.map(function(v, i) {
+    var safeTitle = v.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return '<div class="vid-item fade" id="vid-' + v.id + '">' +
+      '<div class="vid-thumb-wrap" onclick="playInPlace(\'' + v.id + '\')">' +
+        '<img src="https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg" alt="' + safeTitle + '" loading="lazy">' +
+        '<div class="vid-play-overlay"><div class="vid-play-btn">▶</div></div>' +
+      '</div>' +
+      '<div class="vid-info"><div class="vid-title">' + v.title + '</div></div>' +
+    '</div>';
+  }).join('');
+  observeFades();
+}
+
+// ═══ Play video IN-PLACE — replaces thumbnail with iframe ═══
+function playInPlace(id) {
+  var item = document.getElementById('vid-' + id);
+  if (!item) return;
+  var thumbWrap = item.querySelector('.vid-thumb-wrap');
+  if (!thumbWrap) return;
+  // Replace thumbnail with iframe
+  var iframe = document.createElement('iframe');
+  iframe.className = 'vid-embed';
+  iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  thumbWrap.replaceWith(iframe);
+}
+
+// ═══ Init grids ═══
+renderCatTabs();
+renderVidGrid('vidGrid', VIDEOS);
+
+// Testimonials — all success stories in the test grid
+var TEST_VIDEOS = VIDEOS.filter(function(v) { return v.cat === 'success'; });
+renderVidGrid('testVidGrid', TEST_VIDEOS);
+
+// ═══ FadeIn on scroll (IntersectionObserver) ═══
+function observeFades() {
+  var fades = document.querySelectorAll('.fade:not(.observed)');
+  var obs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        var delay = parseFloat(e.target.getAttribute('data-delay')) || 0;
+        e.target.style.transitionDelay = delay + 's';
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, {threshold:0.1});
+  fades.forEach(function(el) {
+    el.classList.add('observed');
+    obs.observe(el);
+  });
+}
+observeFades();
+
+// ═══ Side nav active tracking ═══
+var sections = ['hero','problem','modules','videos','testimonials','bonuses','faq','cta'];
+window.addEventListener('scroll', function() {
+  for (var i = 0; i < sections.length; i++) {
+    var el = document.getElementById(sections[i]);
+    if (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top <= 200 && rect.bottom > 200) {
+        document.querySelectorAll('.nav-dot').forEach(function(d) { d.classList.remove('active'); });
+        var dot = document.querySelector('.nav-dot[data-section="' + sections[i] + '"]');
+        if (dot) dot.classList.add('active');
+        break;
+      }
+    }
+  }
+});
+
+// Side nav click
+document.querySelectorAll('.nav-dot').forEach(function(dot) {
+  dot.addEventListener('click', function() {
+    var id = this.getAttribute('data-section');
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// ═══ Glow orb follows mouse ═══
+document.addEventListener('mousemove', function(e) {
+  var orb = document.getElementById('glowOrb');
+  orb.style.left = e.clientX + 'px';
+  orb.style.top = e.clientY + 'px';
+});
+
+// ═══ Smooth scroll for anchor links ═══
+document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+  a.addEventListener('click', function(e) {
+    e.preventDefault();
+    var target = document.querySelector(this.getAttribute('href'));
+    if (target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+// ═══ FAQ ═══
+var faqData = [
+  {q:"N-am nicio idee despre magazine online. Pot să încep?",a:"Absolut! Cursul e creat special pentru începători. Pornim de la zero, pas cu pas. Mulți studenți de succes au început exact ca tine."},
+  {q:"Și dacă n-am timp? Am job de la 9 la 5.",a:"Programul e conceput să funcționeze cu 2-3 ore pe zi. Lecțiile sunt disponibile oricând. Poți învăța seara sau în weekend."},
+  {q:"Ce se întâmplă dacă dau greș?",a:"Eșecul face parte din proces. Îți oferim toate instrumentele, strategiile testate și suportul pentru a minimiza riscurile."},
+  {q:"Există suport dacă mă blochez?",a:"Da! Suport dedicat, comunitate activă și resurse suplimentare. Nu ești singur — echipa noastră e mereu disponibilă."},
+  {q:"Cât durează până fac bani?",a:"Studenții activi văd primele rezultate în 30-60 de zile. Nu promitem îmbogățire peste noapte, ci un sistem testat care funcționează."},
+  {q:"Ce se întâmplă dacă n-am idei de produse?",a:"Modulul 2 e dedicat research-ului. 7 metode diferite de a găsi produse câștigătoare, inclusiv tool-uri gratuite."},
+  {q:"Dacă sunt mai timid și nu mă pricep la vânzări?",a:"Nu vinzi față în față! Totul e online, prin reclame și pagini optimizate. Modulul 12 te învață comunicarea eficientă."},
+  {q:"Ce se întâmplă după ce intru în program?",a:"Acces instant la toate cele 12 module, 50+ lecții, instrumente exclusive și suport dedicat. Poți începe imediat."},
+  {q:"Ce se întâmplă dacă nu îmi place?",a:"Încurajăm să dai o șansă reală. Dacă aplici și nu vezi rezultate, echipa te ajută personal."},
+  {q:"Cine trimite coletele?",a:"Centre de fulfillment se ocupă de tot: depozitare, ambalare, trimitere. Tu te concentrezi pe marketing. Modulul 6 explică totul."},
+  {q:"Am nevoie de angajați?",a:"Nu la început. Totul se gestionează singur cu automatizări. La scalare, adaugi un VA — Modulul 11 te ghidează."},
+  {q:"Pot să lucrez de oriunde?",a:"Da! Laptop + internet. De acasă, din cafenea sau din vacanță. Flexibilitate totală."},
+  {q:"Ce tip de produse se vând?",a:"Produse fizice de nișă: gadget-uri, frumusețe, accesorii, casă, fitness. Modulul 2 arată ce funcționează pe piața românească."},
+  {q:"Trebuie să import doar din China?",a:"Nu! Poți lucra cu furnizori din România, UE sau China. Modulul 3 acoperă toate opțiunile."},
+  {q:"Cum plătesc clienții?",a:"Cash la livrare (COD). Plătesc curierului la primirea coletului. Zero barieră de încredere, conversii mari."},
+  {q:"Ce se întâmplă dacă cineva nu preia coletul?",a:"Rata medie e 15-25%. Modulul 6 te învață cum să minimizezi prin confirmare telefonică și SMS-uri."},
+  {q:"Trebuie să plătesc TVA sau să am contabil?",a:"Da, ai nevoie de firmă. Modulul 9 te ghidează complet: SRL, CAEN, TVA, contabil — pas cu pas."},
+  {q:"Pot vinde și produse digitale?",a:"COD e pentru produse fizice, dar poți adăuga digitale ca upsell. Shopify suportă ambele."},
+  {q:"Pot să vând fără reclame?",a:"Organic-ul funcționează dar e lent. Recomandăm 50-100 RON/zi la început. Modulul 5 te învață să cheltuiești eficient."},
+];
+
+var faqList = document.getElementById('faqList');
+faqData.forEach(function(item) {
+  var div = document.createElement('div');
+  div.className = 'faq-item fade';
+  div.innerHTML = '<div class="faq-q" onclick="this.parentElement.classList.toggle(\'open\')"><span>' + item.q + '</span><span class="faq-chevron">+</span></div><div class="faq-a"><div class="faq-a-inner">' + item.a + '</div></div>';
+  faqList.appendChild(div);
+});
+observeFades();
+</script>
+</body>
+</html>

@@ -11,28 +11,28 @@ if (COURSE_DATA.modules[0].lessons && COURSE_DATA.modules[0].lessons[0]) {
       title: "📹 Video Tutoriale — Cum funcționează COD",
       items: [
         {
-          title: "Ce este COD? Explicat simplu",
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          title: "Cum să faci bani cu e-commerce COD",
+          url: "https://youtu.be/XulvgOypz04",
           description: "Introducere completă în modelul Cash on Delivery",
           duration: "12:34"
         },
         {
-          title: "Primul tău magazin Shopify",
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          description: "Setup complet pas cu pas pentru începători",
+          title: "Validare Produs Pas cu Pas",
+          url: "https://youtu.be/K8s-bs7BWpc",
+          description: "Cum validezi un produs înainte să investești",
           duration: "24:15"
         },
         {
-          title: "Facebook Ads pentru COD",
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          description: "Prima ta campanie de ads profitabilă",
+          title: "Testimonial Student #1",
+          url: "https://youtu.be/4JHgdgMEN94",
+          description: "Rezultate reale de la studenți COD Academy",
           duration: "18:42"
         },
         {
-          title: "Cum găsești produse câștigătoare",
-          url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-          description: "Strategia completă de research",
-          duration: "31:08"
+          title: "Testimonial Student #2",
+          url: "https://youtu.be/WUNpMn--4AY",
+          description: "Experiența unui student în programul COD",
+          duration: "15:08"
         }
       ]
     },
@@ -41,34 +41,34 @@ if (COURSE_DATA.modules[0].lessons && COURSE_DATA.modules[0].lessons[0]) {
       title: "📁 Resurse & Materiale",
       items: [
         {
-          title: "Template Profit Tracker (Google Sheets)",
-          description: "Spreadsheet complet pentru tracking financiar zilnic",
-          url: "https://docs.google.com/spreadsheets",
-          icon: "sheet"
+          title: "Folder Complet Resurse COD Academy",
+          description: "Toate materialele, template-urile și ghidurile din curs",
+          url: "https://drive.google.com/drive/folders/1gnSdgCOnCRcbamBb40QVfEN1jPQEXkee?usp=drive_link",
+          icon: "drive"
         },
         {
-          title: "Checklist Lansare Produs (PDF)",
-          description: "Lista completă de verificare înainte de lansarea unui produs",
-          url: "https://drive.google.com",
-          icon: "pdf"
-        },
-        {
-          title: "Template Pagină Produs Shopify",
-          description: "Template optimizat pentru conversie maximă pe COD",
-          url: "https://drive.google.com",
-          icon: "template"
-        },
-        {
-          title: "Calculator ROI Campanii Ads",
-          description: "Tool interactiv pentru calcularea ROAS-ului real",
-          url: "https://docs.google.com/spreadsheets",
+          title: "Shopify 97% OFF — Deal Exclusiv",
+          description: "Obține Shopify la cel mai mic preț posibil",
+          url: "https://shopify.pxf.io/JK7vbr",
           icon: "tool"
         },
         {
-          title: "Folder Complet Resurse Modul 1",
-          description: "Toate materialele, template-urile și ghidurile din acest modul",
-          url: "https://drive.google.com",
-          icon: "drive"
+          title: "Minea Spy Tool — Reducere -20%",
+          description: "Cel mai bun tool de spy pentru produse câștigătoare",
+          url: "https://app.minea.com/en/plans/premium?ref=cashondelivery",
+          icon: "tool"
+        },
+        {
+          title: "Alibaba — Furnizori Verificați",
+          description: "Cea mai mare platformă de furnizori din lume",
+          url: "https://www.alibaba.com",
+          icon: "link"
+        },
+        {
+          title: "YouTube ProfesorulVlad",
+          description: "Canal YouTube cu tutoriale gratuite și strategii",
+          url: "https://www.youtube.com/@profesorulvlad",
+          icon: "video"
         }
       ]
     },

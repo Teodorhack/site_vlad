@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ro" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — COD Academy</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@400,500,600,700&f[]=jet-brains-mono@400,500&display=swap" rel="stylesheet">
+
+  <!-- AUTH GUARD -->
+  <script>
+    (function() {
+      if (!localStorage.getItem("cod_token")) window.location.href = "login.html";
+      var t = localStorage.getItem("cod_theme");
+      if (t === "light") document.documentElement.classList.replace("dark", "light");
+    })();
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       COD ACADEMY — Student Dashboard
+       Premium Dark LMS · Linear.app / Raycast aesthetics
+       ═══════════════════════════════════════════════════ */
+
+    :root {
+      --font: 'Satoshi', -apple-system, system-ui, sans-serif;
+      --fontD: 'Clash Display', var(--font);
+      --fontM: 'JetBrains Mono', 'SF Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --green: #00e85e;
+      --green-dim: rgba(0,232,94,0.06);
+      --green-mid: rgba(0,232,94,0.14);
+      --green-glow: rgba(0,232,94,0.25);
+      --blue: #3b82f6;
+      --violet: #a855f7;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --header-h: 56px;
+    }
+
+    /* ─── Dark Theme (default) ─── */
+    html.dark {
+      --s0: #050508; --s1: #0a0a0d; --s2: #101014; --s3: #161619; --s4: #1c1c1f; --s5: #232326;
+      --ink: rgba(255,255,255,0.92); --ink70: rgba(255,255,255,0.55); --ink50: rgba(255,255,255,0.35);
+      --ink20: rgba(255,255,255,0.12); --edge: rgba(255,255,255,0.06); --edge2: rgba(255,255,255,0.1);
+    }
+
+    /* ─── Light Theme ─── */
+    html.light {
+      --s0: #fafafa; --s1: #ffffff; --s2: #f4f4f5; --s3: #e9e9eb; --s4: #dcdce0; --s5: #cfcfd3;
+      --ink: rgba(0,0,0,0.88); --ink70: rgba(0,0,0,0.55); --ink50: rgba(0,0,0,0.35);
+      --ink20: rgba(0,0,0,0.08); --edge: rgba(0,0,0,0.06); --edge2: rgba(0,0,0,0.1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--s0);
+      color: var(--ink);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Film grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px;
+    }
+
+    /* ─── Header ─── */
+    .top-header {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100;
+      background: rgba(5,5,8,0.7);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--edge);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 20px;
+    }
+    html.light .top-header { background: rgba(255,255,255,0.8); }
+
+    /* Animated glow line under header */
+    .top-header::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--green) 30%, var(--blue) 50%, var(--violet) 70%, transparent 100%);
+      opacity: 0.3;
+    }
+
+    .header-brand {
+      display: flex; align-items: center; gap: 10px; min-width: 160px;
+    }
+    .brand-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green-glow);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    .brand-name {
+      font-family: var(--fontD); font-size: 1rem; font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .header-spacer { flex: 1; }
+
+    .header-user {
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .back-link {
+      text-decoration: none; font-size: 12px; font-weight: 600;
+      color: var(--ink50); padding: 5px 10px; border-radius: 6px;
+      border: 1px solid var(--edge); transition: all 0.2s;
+    }
+    .back-link:hover {
+      border-color: var(--edge2); color: var(--ink);
+    }
+
+    .user-name {
+      font-size: 13px; font-weight: 600;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .theme-toggle {
+      background: none; border: 1px solid var(--edge); border-radius: 8px;
+      color: var(--ink70); font-size: 15px; padding: 5px 8px; cursor: pointer;
+      transition: all 0.2s; line-height: 1;
+    }
+    .theme-toggle:hover { border-color: var(--edge2); color: var(--ink); }
+
+    .logout-btn {
+      background: none; border: 1px solid var(--edge); border-radius: 8px;
+      color: var(--ink50); font-size: 12px; padding: 5px 10px; cursor: pointer;
+      transition: all 0.2s; font-family: var(--font); font-weight: 600;
+    }
+    .logout-btn:hover {
+      border-color: rgba(239,68,68,0.3); color: var(--red);
+      background: rgba(239,68,68,0.05);
+    }
+
+    /* ─── Main Content ─── */
+    .main-content {
+      margin-top: var(--header-h);
+      padding: 40px 32px 60px;
+      max-width: 960px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    /* ─── Welcome ─── */
+    .welcome-section { margin-bottom: 40px; }
+    .welcome-title {
+      font-family: var(--fontD); font-size: 28px; font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 6px;
+    }
+    .welcome-sub {
+      font-size: 14px; color: var(--ink50); font-weight: 500;
+    }
+
+    /* ─── Stat Cards Grid ─── */
+    .stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: var(--s1); border: 1px solid var(--edge); border-radius: 14px;
+      padding: 20px 22px; transition: all 0.25s var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .stat-card:hover {
+      border-color: var(--edge2); transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .stat-card-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .stat-emoji { font-size: 22px; }
+    .stat-label {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--ink50);
+    }
+    .stat-value {
+      font-family: var(--fontD); font-size: 36px; font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 10px;
+    }
+    .stat-bar {
+      width: 100%; height: 3px; background: var(--s3); border-radius: 3px;
+      overflow: hidden;
+    }
+    .stat-bar-fill {
+      height: 100%; border-radius: 3px; width: 0;
+      transition: width 1s var(--ease);
+    }
+
+    /* ─── Section Headers ─── */
+    .section-header {
+      font-family: var(--fontD); font-size: 18px; font-weight: 600;
+      letter-spacing: -0.02em; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-header-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* ─── Module Progress ─── */
+    .modules-section { margin-bottom: 48px; }
+    .module-progress-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .module-progress-item {
+      background: var(--s1); border: 1px solid var(--edge); border-radius: 10px;
+      padding: 14px 18px; transition: all 0.2s var(--ease);
+    }
+    .module-progress-item:hover {
+      border-color: var(--edge2);
+    }
+    .module-progress-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .module-progress-title {
+      font-size: 13px; font-weight: 600; color: var(--ink);
+    }
+    .module-progress-number {
+      font-family: var(--fontM); font-size: 10px; color: var(--ink50);
+      margin-right: 8px;
+    }
+    .module-progress-pct {
+      font-family: var(--fontM); font-size: 12px; font-weight: 600;
+    }
+    .module-bar {
+      width: 100%; height: 4px; background: var(--s3); border-radius: 4px;
+      overflow: hidden;
+    }
+    .module-bar-fill {
+      height: 100%; border-radius: 4px; width: 0;
+      transition: width 1.2s var(--ease);
+    }
+
+    @keyframes barGrow {
+      from { width: 0; }
+    }
+
+    /* ─── Certifications ─── */
+    .certs-section { margin-bottom: 48px; }
+    .cert-placeholder, .recent-placeholder {
+      background: var(--s1); border: 1px solid var(--edge); border-radius: 12px;
+      padding: 32px; text-align: center; color: var(--ink50);
+      font-size: 14px; font-weight: 500;
+    }
+    .cert-placeholder-emoji, .recent-placeholder-emoji {
+      font-size: 32px; margin-bottom: 10px; display: block;
+    }
+
+    /* ─── Recent Lessons ─── */
+    .recent-section { margin-bottom: 48px; }
+
+    /* ─── Loading ─── */
+    .loading-skeleton {
+      background: linear-gradient(90deg, var(--s2) 25%, var(--s3) 50%, var(--s2) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s ease infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+      .main-content { padding: 24px 16px 48px; }
+      .welcome-title { font-size: 22px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+      .stat-value { font-size: 28px; }
+      .header-brand { min-width: auto; }
+      .brand-name { display: none; }
+      .user-name { display: none; }
+      .top-header { gap: 8px; padding: 0 12px; }
+      .back-link { font-size: 11px; padding: 4px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="top-header">
+    <a href="index.html" class="back-link">← Curs</a>
+    <div class="header-brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">COD Academy</span>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="header-user">
+      <span class="user-name" id="userName">—</span>
+      <button class="theme-toggle" id="themeToggle" title="Schimba tema">🌙</button>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main-content">
+
+    <!-- Welcome -->
+    <section class="welcome-section">
+      <h1 class="welcome-title" id="welcomeTitle">Bine ai venit!</h1>
+      <p class="welcome-sub">Iata progresul tau in COD Academy</p>
+    </section>
+
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <span class="stat-emoji">📚</span>
+          <span class="stat-label">Lectii completate</span>
+        </div>
+        <div class="stat-value" id="statLessons" style="color: var(--green);">0</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barLessons" style="background: var(--green);"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <span class="stat-emoji">📦</span>
+          <span class="stat-label">Module finalizate</span>
+        </div>
+        <div class="stat-value" id="statModules" style="color: var(--blue);">0</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barModules" style="background: var(--blue);"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <span class="stat-emoji">⏱</span>
+          <span class="stat-label">Timp total</span>
+        </div>
+        <div class="stat-value" id="statTime" style="color: var(--violet);">0h</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barTime" style="background: var(--violet);"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <span class="stat-emoji">🔥</span>
+          <span class="stat-label">Serie zilnica</span>
+        </div>
+        <div class="stat-value" id="statStreak" style="color: var(--amber);">0</div>
+        <div class="stat-bar"><div class="stat-bar-fill" id="barStreak" style="background: var(--amber);"></div></div>
+      </div>
+    </div>
+
+    <!-- Module Progress -->
+    <section class="modules-section">
+      <h2 class="section-header">
+        <span class="section-header-dot"></span>
+        Progres Module
+      </h2>
+      <div class="module-progress-list" id="moduleProgressList">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- Certifications -->
+    <section class="certs-section">
+      <h2 class="section-header">
+        <span class="section-header-dot" style="background: var(--amber);"></span>
+        Certificari obtinute
+      </h2>
+      <div id="certsContainer">
+        <div class="cert-placeholder">
+          <span class="cert-placeholder-emoji">🏆</span>
+          Completeaza un modul pentru a primi certificatul
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Lessons -->
+    <section class="recent-section">
+      <h2 class="section-header">
+        <span class="section-header-dot" style="background: var(--blue);"></span>
+        Lectii recente
+      </h2>
+      <div id="recentContainer">
+        <div class="recent-placeholder">
+          <span class="recent-placeholder-emoji">📖</span>
+          Incepe o lectie pentru a vedea activitatea recenta
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- THEME TOGGLE -->
+  <script>
+    (function() {
+      var toggle = document.getElementById('themeToggle');
+      var html = document.documentElement;
+
+      function applyTheme(theme) {
+        html.className = theme;
+        localStorage.setItem('cod_theme', theme);
+        toggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+      }
+
+      toggle.addEventListener('click', function() {
+        applyTheme(html.classList.contains('dark') ? 'light' : 'dark');
+      });
+
+      // Apply saved theme
+      var saved = localStorage.getItem('cod_theme');
+      if (saved) applyTheme(saved);
+    })();
+  </script>
+
+  <!-- DASHBOARD LOGIC -->
+  <script>
+    (function() {
+      var BASE = window.location.origin;
+      var token = localStorage.getItem("cod_token");
+
+      var MODULE_COLORS = ['#00e85e','#3b82f6','#b47aff','#ff6ab4','#ffd600','#ff6a00'];
+
+      var MODULE_NAMES = [
+        'Introducere in E-Commerce COD',
+        'Cercetare de Piata & Nise Profitabile',
+        'Crearea Magazinului Online',
+        'Surse de Produse & Furnizori',
+        'Copywriting & Descrieri de Produse',
+        'Facebook Ads — Fundamentals',
+        'Facebook Ads — Scalare',
+        'TikTok Ads & UGC',
+        'Google Ads & SEO Basics',
+        'Fulfillment & Logistica',
+        'Automatizari & Tools',
+        'Scalare & Mindset Antreprenorial'
+      ];
+
+      // ─── Fetch user info ───
+      function loadUser() {
+        try {
+          var user = JSON.parse(localStorage.getItem("cod_user") || "{}");
+          var nameEl = document.getElementById("userName");
+          var welcomeEl = document.getElementById("welcomeTitle");
+          var displayName = user.display_name || user.username || "Student";
+          if (nameEl) nameEl.textContent = displayName;
+          if (welcomeEl) welcomeEl.textContent = "Bine ai venit, " + displayName + "!";
+        } catch(e) {}
+
+        // Also fetch fresh data from /api/auth/me
+        if (token) {
+          fetch(BASE + "/api/auth/me", {
+            headers: { "Authorization": "Bearer " + token }
+          }).then(function(res) {
+            if (res.status === 401) {
+              return fetch(BASE + "/api/auth/refresh", {
+                method: "POST", credentials: "include"
+              }).then(function(r) { return r.json(); }).then(function(data) {
+                if (data.accessToken) {
+                  localStorage.setItem("cod_token", data.accessToken);
+                  token = data.accessToken;
+                  return loadUser();
+                } else {
+                  localStorage.clear();
+                  window.location.href = "login.html";
+                }
+              });
+            }
+            return res.json();
+          }).then(function(user) {
+            if (user && (user.display_name || user.username)) {
+              var displayName = user.display_name || user.username;
+              var nameEl = document.getElementById("userName");
+              var welcomeEl = document.getElementById("welcomeTitle");
+              if (nameEl) nameEl.textContent = displayName;
+              if (welcomeEl) welcomeEl.textContent = "Bine ai venit, " + displayName + "!";
+              localStorage.setItem("cod_user", JSON.stringify(user));
+            }
+          }).catch(function() {});
+        }
+      }
+
+      // ─── Fetch progress ───
+      function loadProgress() {
+        if (!token) return;
+
+        fetch(BASE + "/api/progress", {
+          headers: { "Authorization": "Bearer " + token }
+        }).then(function(res) {
+          return res.json();
+        }).then(function(data) {
+          renderStats(data);
+          renderModules(data);
+          renderCerts(data);
+          renderRecent(data);
+        }).catch(function(e) {
+          console.error("Failed to load progress:", e);
+          // Show zeroed stats
+          renderModulesPlaceholder();
+        });
+      }
+
+      // ─── Render Stats ───
+      function renderStats(data) {
+        var lessonsCompleted = data.lessonsCompleted || data.lessons_completed || 0;
+        var totalLessons = data.totalLessons || data.total_lessons || 120;
+        var modulesFinished = data.modulesFinished || data.modules_finished || 0;
+        var totalModules = data.totalModules || data.total_modules || 12;
+        var totalMinutes = data.totalMinutes || data.total_minutes || 0;
+        var streak = data.streak || data.daily_streak || 0;
+
+        document.getElementById("statLessons").textContent = lessonsCompleted;
+        document.getElementById("statModules").textContent = modulesFinished;
+
+        var hours = Math.floor(totalMinutes / 60);
+        var mins = totalMinutes % 60;
+        document.getElementById("statTime").textContent = hours + "h " + (mins > 0 ? mins + "m" : "");
+
+        document.getElementById("statStreak").textContent = streak;
+
+        // Animate bars after a small delay
+        setTimeout(function() {
+          var lessonPct = totalLessons > 0 ? (lessonsCompleted / totalLessons * 100) : 0;
+          var modulePct = totalModules > 0 ? (modulesFinished / totalModules * 100) : 0;
+          var timePct = Math.min((totalMinutes / 6000) * 100, 100); // 100h = full
+          var streakPct = Math.min((streak / 30) * 100, 100); // 30 days = full
+
+          document.getElementById("barLessons").style.width = lessonPct + "%";
+          document.getElementById("barModules").style.width = modulePct + "%";
+          document.getElementById("barTime").style.width = timePct + "%";
+          document.getElementById("barStreak").style.width = streakPct + "%";
+        }, 200);
+      }
+
+      // ─── Render Module Progress Bars ───
+      function renderModules(data) {
+        var container = document.getElementById("moduleProgressList");
+        container.innerHTML = "";
+
+        var modules = data.modules || data.moduleProgress || [];
+
+        // If API returns per-module data
+        if (modules.length > 0) {
+          modules.forEach(function(mod, i) {
+            var idx = i % MODULE_COLORS.length;
+            var color = MODULE_COLORS[idx];
+            var name = mod.title || mod.name || MODULE_NAMES[i] || ("Modul " + (i + 1));
+            var pct = mod.percentage || mod.progress || 0;
+            appendModuleBar(container, i + 1, name, pct, color);
+          });
+        } else {
+          // Render all 12 modules with 0% if no data
+          renderModulesPlaceholder();
+        }
+
+        // Animate after delay
+        setTimeout(function() {
+          var fills = container.querySelectorAll(".module-bar-fill");
+          fills.forEach(function(fill) {
+            fill.style.width = fill.getAttribute("data-width");
+          });
+        }, 400);
+      }
+
+      function renderModulesPlaceholder() {
+        var container = document.getElementById("moduleProgressList");
+        container.innerHTML = "";
+        MODULE_NAMES.forEach(function(name, i) {
+          var color = MODULE_COLORS[i % MODULE_COLORS.length];
+          appendModuleBar(container, i + 1, name, 0, color);
+        });
+      }
+
+      function appendModuleBar(container, num, name, pct, color) {
+        var item = document.createElement("div");
+        item.className = "module-progress-item";
+        item.innerHTML =
+          '<div class="module-progress-top">' +
+            '<div>' +
+              '<span class="module-progress-number">M' + String(num).padStart(2, '0') + '</span>' +
+              '<span class="module-progress-title">' + name + '</span>' +
+            '</div>' +
+            '<span class="module-progress-pct" style="color:' + color + ';">' + Math.round(pct) + '%</span>' +
+          '</div>' +
+          '<div class="module-bar">' +
+            '<div class="module-bar-fill" data-width="' + pct + '%" style="background:' + color + ';"></div>' +
+          '</div>';
+        container.appendChild(item);
+      }
+
+      // ─── Render Certifications ───
+      function renderCerts(data) {
+        var certs = data.certifications || data.certificates || [];
+        if (certs.length === 0) return; // keep placeholder
+
+        var container = document.getElementById("certsContainer");
+        container.innerHTML = "";
+
+        certs.forEach(function(cert) {
+          var card = document.createElement("div");
+          card.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:all 0.2s;";
+          card.innerHTML =
+            '<span style="font-size:24px;">🏆</span>' +
+            '<div>' +
+              '<div style="font-size:14px;font-weight:600;">' + (cert.title || cert.name || "Certificat") + '</div>' +
+              '<div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + (cert.date || cert.earned_at || "") + '</div>' +
+            '</div>';
+          container.appendChild(card);
+        });
+      }
+
+      // ─── Render Recent Lessons ───
+      function renderRecent(data) {
+        var recent = data.recentLessons || data.recent_lessons || [];
+        if (recent.length === 0) return; // keep placeholder
+
+        var container = document.getElementById("recentContainer");
+        container.innerHTML = "";
+
+        recent.slice(0, 5).forEach(function(lesson) {
+          var item = document.createElement("div");
+          item.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:6px;transition:all 0.2s;cursor:pointer;";
+          item.innerHTML =
+            '<span style="font-size:18px;">📖</span>' +
+            '<div style="flex:1;">' +
+              '<div style="font-size:13px;font-weight:600;">' + (lesson.title || lesson.name || "Lectie") + '</div>' +
+              '<div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + (lesson.module || "") + '</div>' +
+            '</div>' +
+            '<span style="font-family:var(--fontM);font-size:11px;color:var(--ink50);">' + (lesson.date || lesson.accessed_at || "") + '</span>';
+          container.appendChild(item);
+        });
+      }
+
+      // ─── Logout ───
+      document.getElementById("logoutBtn").addEventListener("click", async function() {
+        try {
+          await fetch(BASE + "/api/auth/logout", {
+            method: "POST", credentials: "include",
+            headers: token ? { "Authorization": "Bearer " + token } : {}
+          });
+        } catch(e) {}
+        localStorage.removeItem("cod_token");
+        localStorage.removeItem("cod_user");
+        window.location.href = "login.html";
+      });
+
+      // ─── Init ───
+      loadUser();
+      loadProgress();
+
+    })();
+  </script>
+
+</body>
+</html>

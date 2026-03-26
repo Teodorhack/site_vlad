@@ -40,7 +40,7 @@ function saveCalculation(req, res) {
     db.run(
       `INSERT INTO profit_calculations (user_id, title, investment, revenue, profit, margin, notes)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [req.user.id, title || "Calcul", investment, revenue, calcProfit, calcMargin, notes]
+      [req.user.id, title || "Calcul", investment, revenue, calcProfit, calcMargin, notes || null]
     );
     saveDatabase();
 
@@ -56,6 +56,7 @@ function saveCalculation(req, res) {
       },
     });
   } catch (err) {
+    console.error("Calculator save error:", err);
     res.status(500).json({ error: "Eroare la salvare." });
   }
 }

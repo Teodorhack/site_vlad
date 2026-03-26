@@ -13,6 +13,7 @@ const modulesRoutes = require("./routes/modules");
 const progressRoutes = require("./routes/progress");
 const calculatorRoutes = require("./routes/calculator");
 const adminRoutes = require("./routes/admin");
+const commentsRoutes = require("./routes/comments");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,7 +22,11 @@ const PORT = process.env.PORT || 3000;
 const FRONTEND = path.resolve(__dirname, "../../frontend");
 
 // ── Security ──────────────────────────────────────────
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
+}));
 app.use(cors({
   origin: [
     "http://localhost:3000",
@@ -55,18 +60,27 @@ app.use("/api", apiLimiter, modulesRoutes);
 app.use("/api/progress", apiLimiter, progressRoutes);
 app.use("/api/calculator", apiLimiter, calculatorRoutes);
 app.use("/api/admin", apiLimiter, adminRoutes);
+app.use("/api/comments", apiLimiter, commentsRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// ── Root → landing page (before static) ──────────────
+app.get("/", (req, res) => {
+  res.sendFile(path.join(FRONTEND, "landing.html"), (err) => {
+    if (err) res.sendFile(path.join(FRONTEND, "login.html"));
+  });
+});
+
 // ── Serve Frontend ────────────────────────────────────
 app.use(express.static(FRONTEND));
 
-// Fallback: any non-API route serves index.html
+// Fallback: non-API GET requests → login
 app.use((req, res, next) => {
   if (req.path.startsWith("/api")) return next();
-  res.sendFile(path.join(FRONTEND, "index.html"), (err) => {
+  if (req.method !== "GET") return next();
+  res.sendFile(path.join(FRONTEND, "login.html"), (err) => {
     if (err) next();
   });
 });
@@ -80,6 +94,15 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error("Server error:", err);
   res.status(500).json({ error: "Eroare interna." });
+});
+
+// ── Global error safety net ──────────────────────────
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Rejection:", reason);
 });
 
 // ── Start ─────────────────────────────────────────────

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ro" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bonusuri — COD Academy</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=clash-display@400,500,600,700&f[]=jet-brains-mono@400,500&display=swap" rel="stylesheet">
+
+  <!-- AUTH GUARD -->
+  <script>
+    (function() {
+      if (!localStorage.getItem("cod_token")) window.location.href = "login.html";
+      var t = localStorage.getItem("cod_theme");
+      if (t === "light") document.documentElement.classList.replace("dark", "light");
+    })();
+  </script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       COD ACADEMY — Bonusuri Page
+       Premium Dark LMS — Linear.app / Raycast aesthetic
+       ═══════════════════════════════════════════════════ */
+
+    :root {
+      --font: 'Satoshi', -apple-system, system-ui, sans-serif;
+      --fontD: 'Clash Display', var(--font);
+      --fontM: 'JetBrains Mono', 'SF Mono', monospace;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --green: #00e85e;
+      --green-dim: rgba(0,232,94,0.06);
+      --green-mid: rgba(0,232,94,0.14);
+      --green-glow: rgba(0,232,94,0.25);
+      --blue: #3b82f6;
+      --violet: #a855f7;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --header-h: 56px;
+    }
+
+    /* Dark Theme (default) */
+    html.dark {
+      --s0: #050508; --s1: #0a0a0d; --s2: #101014; --s3: #161619; --s4: #1c1c1f; --s5: #232326;
+      --ink: rgba(255,255,255,0.92); --ink70: rgba(255,255,255,0.55); --ink50: rgba(255,255,255,0.35);
+      --ink20: rgba(255,255,255,0.12); --edge: rgba(255,255,255,0.06); --edge2: rgba(255,255,255,0.1);
+    }
+
+    /* Light Theme */
+    html.light {
+      --s0: #fafafa; --s1: #ffffff; --s2: #f4f4f5; --s3: #e9e9eb; --s4: #dcdce0; --s5: #cfcfd3;
+      --ink: rgba(0,0,0,0.88); --ink70: rgba(0,0,0,0.55); --ink50: rgba(0,0,0,0.35);
+      --ink20: rgba(0,0,0,0.08); --edge: rgba(0,0,0,0.06); --edge2: rgba(0,0,0,0.1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--s0);
+      color: var(--ink);
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* Film grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px;
+    }
+
+    /* ─── Header ─── */
+    .top-header {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--header-h); z-index: 100;
+      background: rgba(5,5,8,0.7);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--edge);
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 20px;
+    }
+    html.light .top-header { background: rgba(255,255,255,0.8); }
+
+    .top-header::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--green) 30%, var(--blue) 50%, var(--violet) 70%, transparent 100%);
+      opacity: 0.3;
+    }
+
+    .header-brand {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .brand-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green-glow);
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    .brand-name {
+      font-family: var(--fontD); font-size: 1rem; font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .header-spacer { flex: 1; }
+
+    .header-link {
+      text-decoration: none; font-size: 12px; font-weight: 600;
+      color: var(--ink50); padding: 5px 10px; border-radius: 6px;
+      border: 1px solid var(--edge); transition: all 0.2s;
+    }
+    .header-link:hover {
+      border-color: var(--edge2); color: var(--ink);
+    }
+
+    .theme-toggle {
+      background: none; border: 1px solid var(--edge); border-radius: 8px;
+      color: var(--ink70); font-size: 15px; padding: 5px 8px; cursor: pointer;
+      transition: all 0.2s; line-height: 1;
+    }
+    .theme-toggle:hover { border-color: var(--edge2); color: var(--ink); }
+
+    .logout-btn {
+      background: none; border: 1px solid var(--edge); border-radius: 8px;
+      color: var(--ink50); font-size: 12px; padding: 5px 10px; cursor: pointer;
+      transition: all 0.2s; font-family: var(--font); font-weight: 600;
+    }
+    .logout-btn:hover {
+      border-color: rgba(239,68,68,0.3); color: var(--red);
+      background: rgba(239,68,68,0.05);
+    }
+
+    /* ─── Main Content ─── */
+    .main-content {
+      margin-top: var(--header-h);
+      padding: 0 24px 80px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── Hero Section ─── */
+    .hero {
+      text-align: center;
+      padding: 72px 0 48px;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-family: var(--fontM); font-size: 11px; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-mid);
+      padding: 6px 16px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .hero-title {
+      font-family: var(--fontD);
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      background: linear-gradient(90deg, var(--ink), var(--green), var(--blue), var(--violet), var(--ink));
+      background-size: 300% 100%;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 100% 50%; }
+      50% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    .hero-subtitle {
+      margin-top: 16px;
+      font-size: 16px;
+      color: var(--ink70);
+      max-width: 560px;
+      margin-left: auto; margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ─── Stats Bar ─── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      padding: 24px 0 48px;
+      border-bottom: 1px solid var(--edge);
+      margin-bottom: 56px;
+    }
+    .stat-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 600; color: var(--ink70);
+    }
+    .stat-value {
+      font-family: var(--fontD); font-size: 20px; font-weight: 700;
+      color: var(--green);
+    }
+
+    /* ─── Section Title ─── */
+    .section-title {
+      font-family: var(--fontD); font-size: 1.6rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    /* ─── Bonus Cards Grid ─── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 72px;
+    }
+
+    .bonus-card {
+      background: var(--s2);
+      border: 1px solid var(--edge);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s var(--ease);
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    .bonus-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .bonus-card:hover {
+      border-color: var(--green-mid);
+      box-shadow: 0 0 40px rgba(0,232,94,0.06), 0 8px 32px rgba(0,0,0,0.3);
+      transform: translateY(-4px);
+    }
+    .bonus-card.visible:hover {
+      transform: translateY(-4px);
+    }
+    .bonus-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--green-mid), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .bonus-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .card-icon { font-size: 28px; }
+    .card-badge {
+      font-family: var(--fontM); font-size: 10px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 100px;
+    }
+    .badge-free {
+      color: var(--green); background: var(--green-dim); border: 1px solid var(--green-mid);
+    }
+    .badge-deal {
+      color: var(--amber); background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);
+    }
+    .badge-exclusive {
+      color: var(--violet); background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2);
+    }
+    .badge-new {
+      color: var(--blue); background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2);
+    }
+
+    .card-title {
+      font-family: var(--fontD); font-size: 1.1rem; font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      font-size: 13.5px; color: var(--ink70); line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-cta {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font); font-size: 13px; font-weight: 600;
+      color: var(--green);
+      background: var(--green-dim);
+      border: 1px solid var(--green-mid);
+      padding: 8px 18px; border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.25s var(--ease);
+    }
+    .card-cta:hover {
+      background: var(--green-mid);
+      box-shadow: 0 0 20px var(--green-dim);
+    }
+
+    /* ─── Inline Video in Card ─── */
+    .card-video {
+      position: relative; padding-bottom: 56.25%; height: 0;
+      border-radius: 10px; overflow: hidden; margin-top: 4px;
+      border: 1px solid var(--edge);
+    }
+    .card-video iframe {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    }
+
+    /* ─── Video Showcase ─── */
+    .video-section {
+      margin-bottom: 72px;
+    }
+    .video-featured {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--edge);
+      margin-bottom: 20px;
+      background: var(--s1);
+    }
+    .video-featured iframe {
+      width: 100%; height: 100%; border: none;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .video-thumb {
+      cursor: pointer;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--edge);
+      transition: all 0.3s var(--ease);
+      background: var(--s2);
+    }
+    .video-thumb:hover {
+      border-color: var(--green-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .video-thumb img {
+      width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+      display: block;
+    }
+    .video-thumb-title {
+      padding: 10px 14px;
+      font-size: 13px; font-weight: 600;
+      color: var(--ink70);
+    }
+    .video-thumb:hover .video-thumb-title { color: var(--ink); }
+
+    /* ─── Testimonials ─── */
+    .testimonials-section {
+      margin-bottom: 72px;
+    }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .testimonial-card {
+      background: var(--s2);
+      border: 1px solid var(--edge);
+      border-radius: 16px;
+      padding: 28px 24px;
+      transition: all 0.3s var(--ease);
+    }
+    .testimonial-card:hover {
+      border-color: var(--edge2);
+      transform: translateY(-2px);
+    }
+    .testimonial-stars {
+      font-size: 14px; margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+    .testimonial-quote {
+      font-size: 14px; line-height: 1.7;
+      color: var(--ink70);
+      font-style: italic;
+      margin-bottom: 18px;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .testimonial-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--s4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .testimonial-name {
+      font-size: 13px; font-weight: 700;
+    }
+
+    /* ─── Final CTA ─── */
+    .final-cta {
+      text-align: center;
+      padding: 64px 0 32px;
+      border-top: 1px solid var(--edge);
+    }
+    .final-cta-title {
+      font-family: var(--fontD); font-size: 2rem; font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+    .final-cta-sub {
+      font-size: 15px; color: var(--ink70);
+      margin-bottom: 32px;
+    }
+    .final-cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font); font-size: 15px; font-weight: 700;
+      color: #050508;
+      background: var(--green);
+      border: none; border-radius: 12px;
+      padding: 14px 36px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s var(--ease);
+      box-shadow: 0 0 30px var(--green-glow);
+    }
+    .final-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px var(--green-glow), 0 8px 32px rgba(0,232,94,0.15);
+    }
+
+    /* ─── Animations ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .main-content { padding: 0 16px 60px; }
+      .hero { padding: 48px 0 32px; }
+      .stats-bar { gap: 16px; }
+      .stat-item { font-size: 12px; }
+      .stat-value { font-size: 16px; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .video-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .header-link.hide-mobile { display: none; }
+    }
+    @media (max-width: 375px) {
+      .main-content { padding: 0 12px 48px; }
+      .hero-title { font-size: 1.8rem; }
+      .video-grid { grid-template-columns: 1fr; }
+      .stats-bar { flex-direction: column; align-items: center; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header class="top-header">
+    <a href="index.html" class="header-link" title="Înapoi la curs">&#8592; Curs</a>
+    <div class="header-brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">COD Academy</span>
+    </div>
+    <div class="header-spacer"></div>
+    <a href="index.html" class="header-link hide-mobile">Dashboard</a>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Schimbă tema">&#9788;</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <div class="main-content">
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="hero-badge">BONUSURI EXCLUSIVE</div>
+      <h1 class="hero-title">Bonusuri Exclusive</h1>
+      <p class="hero-subtitle">Resurse premium, tool-uri verificate si oferte exclusive disponibile doar pentru studentii COD Academy.</p>
+    </section>
+
+    <!-- ── STATS BAR ── -->
+    <div class="stats-bar">
+      <div class="stat-item"><span class="stat-value">12</span> module</div>
+      <div class="stat-item"><span class="stat-value">50+</span> lectii</div>
+      <div class="stat-item"><span class="stat-value">8</span> instrumente</div>
+      <div class="stat-item"><span class="stat-value">24/7</span> suport</div>
+    </div>
+
+    <!-- ── BONUS CARDS ── -->
+    <h2 class="section-title">Resurse & Instrumente</h2>
+    <div class="cards-grid">
+
+      <!-- Card 1 -->
+      <div class="bonus-card" style="transition-delay: 0s;">
+        <div class="card-top">
+          <span class="card-icon">&#x1F4CA;</span>
+          <span class="card-badge badge-free">FREE</span>
+        </div>
+        <h3 class="card-title">Calculator Profitabilitate</h3>
+        <p class="card-desc">Calculatorul nostru complet pentru a analiza profitabilitatea produselor COD</p>
+        <a href="https://drive.google.com/drive/folders/1gnSdgCOnCRcbamBb40QVfEN1jPQEXkee?usp=drive_link" target="_blank" rel="noopener" class="card-cta">Acceseaza &#8594;</a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bonus-card" style="transition-delay: 0.08s;">
+        <div class="card-top">
+          <span class="card-icon">&#x1F6D2;</span>
+          <span class="card-badge badge-deal">DEAL</span>
+        </div>
+        <h3 class="card-title">Shopify 97% OFF</h3>
+        <p class="card-desc">Obtine Shopify la cel mai mic pret posibil — 97% reducere exclusiv prin noi</p>
+        <a href="https://shopify.pxf.io/JK7vbr" target="_blank" rel="noopener" class="card-cta">Acceseaza &#8594;</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bonus-card" style="transition-delay: 0.16s;">
+        <div class="card-top">
+          <span class="card-icon">&#x1F50D;</span>
+          <span class="card-badge badge-exclusive">EXCLUSIVE -20%</span>
+        </div>
+        <h3 class="card-title">Minea Spy Tool</h3>
+        <p class="card-desc">Cel mai bun tool de spy pentru produse castigatoare — reducere exclusiva pentru studenti</p>
+        <a href="https://app.minea.com/en/plans/premium?ref=cashondelivery" target="_blank" rel="noopener" class="card-cta">Acceseaza &#8594;</a>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bonus-card" style="transition-delay: 0.24s;">
+        <div class="card-top">
+          <span class="card-icon">&#x1F3ED;</span>
+          <span class="card-badge badge-free">FREE</span>
+        </div>
+        <h3 class="card-title">Alibaba Furnizori</h3>
+        <p class="card-desc">Acces gratuit la cea mai mare platforma de furnizori din lume</p>
+        <a href="https://www.alibaba.com" target="_blank" rel="noopener" class="card-cta">Acceseaza &#8594;</a>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bonus-card" style="transition-delay: 0.32s;">
+        <div class="card-top">
+          <span class="card-icon">&#x1F4F9;</span>
+          <span class="card-badge badge-new">NEW</span>
+        </div>
+        <h3 class="card-title">Tutorial Facebook Ads</h3>
+        <p class="card-desc">Tutorial complet de Facebook Ads pentru e-commerce COD Romania</p>
+        <div class="card-video">
+          <iframe src="https://www.youtube-nocookie.com/embed/XulvgOypz04?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bonus-card" style="transition-delay: 0.40s;">
+        <div class="card-top">
+          <span class="card-icon">&#x2705;</span>
+          <span class="card-badge badge-free">FREE</span>
+        </div>
+        <h3 class="card-title">Tutorial Validare Produs</h3>
+        <p class="card-desc">Cum validezi un produs inainte sa investesti — metoda testata</p>
+        <div class="card-video">
+          <iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── VIDEO SHOWCASE ── -->
+    <h2 class="section-title">Video-uri Recomandate</h2>
+    <section class="video-section">
+      <div class="video-featured" id="videoFeatured">
+        <iframe src="https://www.youtube.com/embed/XulvgOypz04" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-grid">
+        <div class="video-thumb" onclick="switchVideo('XulvgOypz04')">
+          <img src="https://img.youtube.com/vi/XulvgOypz04/hqdefault.jpg" alt="Cum sa faci bani cu COD" loading="lazy">
+          <div class="video-thumb-title">Cum sa faci bani cu COD</div>
+        </div>
+        <div class="video-thumb" onclick="switchVideo('K8s-bs7BWpc')">
+          <img src="https://img.youtube.com/vi/K8s-bs7BWpc/hqdefault.jpg" alt="Validare Produs Pas cu Pas" loading="lazy">
+          <div class="video-thumb-title">Validare Produs Pas cu Pas</div>
+        </div>
+        <div class="video-thumb" onclick="switchVideo('4JHgdgMEN94')">
+          <img src="https://img.youtube.com/vi/4JHgdgMEN94/hqdefault.jpg" alt="Testimonial Student #1" loading="lazy">
+          <div class="video-thumb-title">Testimonial Student #1</div>
+        </div>
+        <div class="video-thumb" onclick="switchVideo('WUNpMn--4AY')">
+          <img src="https://img.youtube.com/vi/WUNpMn--4AY/hqdefault.jpg" alt="Testimonial Student #2" loading="lazy">
+          <div class="video-thumb-title">Testimonial Student #2</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TESTIMONIALS ── -->
+    <h2 class="section-title">Ce Spun Studentii</h2>
+    <section class="testimonials-section">
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div>
+          <p class="testimonial-quote">"Am inceput fara nicio experienta si in 3 luni am ajuns la primele venituri. Cursul e incredibil de detaliat."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">&#x1F468;&#x200D;&#x1F4BB;</div>
+            <span class="testimonial-name">Alexandru M.</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div>
+          <p class="testimonial-quote">"Cel mai bun curs de e-commerce din Romania. Suportul e extraordinar si totul e explicat pas cu pas."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">&#x1F469;&#x200D;&#x1F393;</div>
+            <span class="testimonial-name">Maria D.</span>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">&#11088;&#11088;&#11088;&#11088;&#11088;</div>
+          <p class="testimonial-quote">"Am testat multe cursuri online, dar acesta e singurul care chiar livreaza rezultate concrete."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">&#x1F468;&#x200D;&#x1F680;</div>
+            <span class="testimonial-name">Andrei P.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FINAL CTA ── -->
+    <section class="final-cta">
+      <h2 class="final-cta-title">Gata sa incepi?</h2>
+      <p class="final-cta-sub">Acceseaza toate bonusurile si incepe drumul spre profit</p>
+      <a href="index.html" class="final-cta-btn">Inapoi la curs &#8594;</a>
+    </section>
+
+  </div>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      var html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.replace('dark', 'light');
+        localStorage.setItem('cod_theme', 'light');
+      } else {
+        html.classList.replace('light', 'dark');
+        localStorage.setItem('cod_theme', 'dark');
+      }
+    }
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('cod_token');
+      window.location.href = 'login.html';
+    }
+
+    // Switch featured video
+    function switchVideo(videoId) {
+      var container = document.getElementById('videoFeatured');
+      container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    }
+
+    // Staggered card reveal on scroll
+    (function() {
+      var cards = document.querySelectorAll('.bonus-card');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var delay = parseFloat(entry.target.style.transitionDelay) || 0;
+            setTimeout(function() {
+              entry.target.classList.add('visible');
+            }, delay * 1000);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      cards.forEach(function(card) { observer.observe(card); });
+    })();
+  </script>
+
+</body>
+</html>
