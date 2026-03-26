@@ -78,7 +78,7 @@ async function initDatabase() {
     CREATE TABLE IF NOT EXISTS user_progress (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
-      lesson_id INTEGER NOT NULL,
+      lesson_id TEXT NOT NULL,
       module_id INTEGER NOT NULL,
       status TEXT DEFAULT 'not_started' CHECK(status IN ('not_started', 'in_progress', 'completed')),
       score INTEGER DEFAULT 0,
@@ -86,8 +86,6 @@ async function initDatabase() {
       completed_at TEXT,
       updated_at TEXT DEFAULT (datetime('now')),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      FOREIGN KEY (lesson_id) REFERENCES lessons(id) ON DELETE CASCADE,
-      FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE,
       UNIQUE(user_id, lesson_id)
     )
   `);

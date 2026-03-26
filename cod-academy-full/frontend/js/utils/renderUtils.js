@@ -21,6 +21,7 @@ const RenderUtils = {
       case 'resources': return this.renderResources(section);
       case 'certificate': return this.renderCertificate(section);
       case 'comments': return this.renderComments(section);
+      case 'quiz': return this.renderQuiz(section);
       default: return '';
     }
   },
@@ -280,6 +281,77 @@ const RenderUtils = {
           </div>
         </div>
       </div>`;
+  },
+
+  // ── QUIZ — multiple choice questions ─────────────────
+  renderQuiz(s) {
+    const quizId = 'quiz-' + Math.random().toString(36).substr(2, 9);
+    const questions = s.questions.map((q, qi) => {
+      const options = q.options.map((opt, oi) => {
+        return `<label class="quiz-option" data-correct="${oi === q.correct ? '1' : '0'}" onclick="RenderUtils._selectOption(this)">
+          <span class="quiz-radio"></span>
+          <span class="quiz-option-text">${opt}</span>
+        </label>`;
+      }).join('');
+      return `<div class="quiz-question" data-qi="${qi}">
+        <div class="quiz-q-num">Întrebarea ${qi + 1}/${s.questions.length}</div>
+        <div class="quiz-q-text">${q.question}</div>
+        <div class="quiz-options">${options}</div>
+        <div class="quiz-feedback" style="display:none"></div>
+      </div>`;
+    }).join('');
+    return `
+      <div class="content-block quiz-block" id="${quizId}">
+        <h4 class="block-title">${s.title || '📝 Quiz — Verifică ce ai învățat'}</h4>
+        <div class="quiz-questions">${questions}</div>
+        <div class="quiz-result" id="${quizId}-result" style="display:none"></div>
+        <button class="quiz-submit" onclick="RenderUtils._submitQuiz('${quizId}', ${s.questions.length})">Verifică răspunsurile</button>
+      </div>`;
+  },
+
+  _selectOption(label) {
+    const parent = label.closest('.quiz-options');
+    parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+    label.classList.add('selected');
+  },
+
+  _submitQuiz(quizId, total) {
+    const block = document.getElementById(quizId);
+    const questions = block.querySelectorAll('.quiz-question');
+    let correct = 0;
+    questions.forEach(q => {
+      const selected = q.querySelector('.quiz-option.selected');
+      const feedback = q.querySelector('.quiz-feedback');
+      if (!selected) {
+        feedback.textContent = 'Selectează un răspuns!';
+        feedback.className = 'quiz-feedback quiz-wrong';
+        feedback.style.display = 'block';
+        return;
+      }
+      if (selected.dataset.correct === '1') {
+        correct++;
+        selected.classList.add('correct');
+        feedback.textContent = '✓ Corect!';
+        feedback.className = 'quiz-feedback quiz-correct';
+      } else {
+        selected.classList.add('wrong');
+        const correctOpt = q.querySelector('.quiz-option[data-correct="1"]');
+        if (correctOpt) correctOpt.classList.add('correct');
+        feedback.textContent = '✗ Răspuns greșit';
+        feedback.className = 'quiz-feedback quiz-wrong';
+      }
+      feedback.style.display = 'block';
+    });
+    const result = document.getElementById(quizId + '-result');
+    const pct = Math.round((correct / total) * 100);
+    result.innerHTML = '<div class="quiz-score">' + correct + '/' + total + ' corecte (' + pct + '%)</div>' +
+      (pct >= 70 ? '<div class="quiz-pass">✓ Ai trecut! Felicitări!</div>' : '<div class="quiz-fail">Recitește lecția și încearcă din nou.</div>');
+    result.style.display = 'block';
+
+    // If passed, mark lesson complete
+    if (pct >= 70 && typeof Navigation !== 'undefined' && Navigation.currentLesson) {
+      TrackProgress.markComplete(Navigation.currentLesson.id);
+    }
   },
 
   // ── Helpers ─────────────────────────────────────────

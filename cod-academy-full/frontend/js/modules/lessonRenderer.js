@@ -33,6 +33,15 @@ const LessonRenderer = {
         ${sections}
       </div>
 
+      <div class="lesson-complete-bar" id="lessonCompleteBar">
+        ${TrackProgress.isCompleted(lesson.id)
+          ? `<div class="complete-done">✓ Lecție completată</div>`
+          : `<button class="complete-btn" onclick="TrackProgress.markComplete('${lesson.id}');document.getElementById('lessonCompleteBar').innerHTML='<div class=\\'complete-done\\'>✓ Lecție completată</div>'">
+              Marchează ca terminată ✓
+            </button>`
+        }
+      </div>
+
       <div class="lesson-nav-footer">
         ${prevLesson ? `
           <button class="nav-btn prev-btn" onclick="Navigation.prevLesson()">

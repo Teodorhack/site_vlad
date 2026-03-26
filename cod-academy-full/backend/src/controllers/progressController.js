@@ -5,16 +5,10 @@ function getUserProgress(req, res) {
   try {
     const db = getDb();
     const result = db.exec(`
-      SELECT 
-        up.id, up.lesson_id, up.module_id, up.status, up.score,
-        up.time_spent_seconds, up.completed_at,
-        l.title as lesson_title, l.slug,
-        m.title as module_title, m.module_number
-      FROM user_progress up
-      JOIN lessons l ON up.lesson_id = l.id
-      JOIN modules m ON up.module_id = m.id
-      WHERE up.user_id = ?
-      ORDER BY m.module_number, l.order_index
+      SELECT id, lesson_id, module_id, status, score, time_spent_seconds, completed_at
+      FROM user_progress
+      WHERE user_id = ?
+      ORDER BY module_id, lesson_id
     `, [req.user.id]);
 
     if (!result.length) return res.json({ progress: [], stats: { total: 0, completed: 0, percentage: 0 } });
@@ -27,16 +21,12 @@ function getUserProgress(req, res) {
     });
 
     const completed = rows.filter(r => r.status === "completed").length;
-    const totalLessons = db.exec("SELECT COUNT(*) FROM lessons");
-    const total = totalLessons[0].values[0][0];
 
     res.json({
       progress: rows,
       stats: {
-        total,
         completed,
         in_progress: rows.filter(r => r.status === "in_progress").length,
-        percentage: total > 0 ? Math.round((completed / total) * 100) : 0,
         total_time_seconds: rows.reduce((sum, r) => sum + (r.time_spent_seconds || 0), 0),
       },
     });
@@ -51,13 +41,10 @@ function getModuleProgress(req, res) {
   try {
     const db = getDb();
     const result = db.exec(`
-      SELECT 
-        up.lesson_id, up.status, up.score, up.time_spent_seconds, up.completed_at,
-        l.title, l.slug, l.lesson_type, l.order_index
-      FROM user_progress up
-      JOIN lessons l ON up.lesson_id = l.id
-      WHERE up.user_id = ? AND up.module_id = ?
-      ORDER BY l.order_index
+      SELECT lesson_id, status, score, time_spent_seconds, completed_at
+      FROM user_progress
+      WHERE user_id = ? AND module_id = ?
+      ORDER BY lesson_id
     `, [req.user.id, req.params.moduleId]);
 
     if (!result.length) return res.json({ lessons: [] });

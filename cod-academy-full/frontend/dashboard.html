@@ -392,6 +392,21 @@
   </main>
 
   <!-- THEME TOGGLE -->
+  <!-- Course data for progress calculation -->
+  <script src="js/data/courseData.js"></script>
+  <script src="js/data/module1.js"></script>
+  <script src="js/data/module2.js"></script>
+  <script src="js/data/module3.js"></script>
+  <script src="js/data/module4.js"></script>
+  <script src="js/data/module5.js"></script>
+  <script src="js/data/module6.js"></script>
+  <script src="js/data/module7.js"></script>
+  <script src="js/data/module8.js"></script>
+  <script src="js/data/module9.js"></script>
+  <script src="js/data/module10.js"></script>
+  <script src="js/data/module11.js"></script>
+  <script src="js/data/module12.js"></script>
+
   <script>
     (function() {
       var toggle = document.getElementById('themeToggle');
@@ -480,94 +495,130 @@
         }
       }
 
-      // ─── Fetch progress ───
+      // ─── Load progress from localStorage (same data as index.html TrackProgress) ───
       function loadProgress() {
-        if (!token) return;
+        var progressData = {};
+        try {
+          progressData = JSON.parse(localStorage.getItem('cod_progress') || '{}');
+        } catch(e) {}
 
-        fetch(BASE + "/api/progress", {
-          headers: { "Authorization": "Bearer " + token }
-        }).then(function(res) {
-          return res.json();
-        }).then(function(data) {
-          renderStats(data);
-          renderModules(data);
-          renderCerts(data);
-          renderRecent(data);
-        }).catch(function(e) {
-          console.error("Failed to load progress:", e);
-          // Show zeroed stats
-          renderModulesPlaceholder();
-        });
-      }
+        var completedLessons = progressData.completedLessons || [];
+        var moduleCompleted = progressData.moduleCompleted || [];
+        var totalSeconds = progressData.totalSeconds || 0;
+        var visitDays = progressData.visitDays || [];
 
-      // ─── Render Stats ───
-      function renderStats(data) {
-        var lessonsCompleted = data.lessonsCompleted || data.lessons_completed || 0;
-        var totalLessons = data.totalLessons || data.total_lessons || 120;
-        var modulesFinished = data.modulesFinished || data.modules_finished || 0;
-        var totalModules = data.totalModules || data.total_modules || 12;
-        var totalMinutes = data.totalMinutes || data.total_minutes || 0;
-        var streak = data.streak || data.daily_streak || 0;
+        // Count total lessons from course data
+        var totalLessons = 0;
+        var moduleData = [];
+        if (typeof COURSE_DATA !== 'undefined') {
+          COURSE_DATA.modules.forEach(function(mod) {
+            var modLessons = mod.lessons ? mod.lessons.length : 0;
+            var modDone = 0;
+            if (mod.lessons) {
+              mod.lessons.forEach(function(l) {
+                if (completedLessons.indexOf(l.id) !== -1) modDone++;
+              });
+            }
+            totalLessons += modLessons;
+            moduleData.push({ title: mod.title, total: modLessons, completed: modDone, percentage: modLessons > 0 ? Math.round((modDone / modLessons) * 100) : 0 });
+          });
+        }
 
-        document.getElementById("statLessons").textContent = lessonsCompleted;
-        document.getElementById("statModules").textContent = modulesFinished;
+        // Calculate streak
+        var streak = 0;
+        if (visitDays.length > 0) {
+          var days = visitDays.slice().sort();
+          var today = new Date().toISOString().split('T')[0];
+          var lastDay = days[days.length - 1];
+          var diffMs = new Date(today) - new Date(lastDay);
+          var diffDays = diffMs / (86400000);
+          if (diffDays <= 1) {
+            streak = 1;
+            for (var i = days.length - 1; i > 0; i--) {
+              var gap = (new Date(days[i]) - new Date(days[i-1])) / 86400000;
+              if (gap === 1) streak++;
+              else break;
+            }
+          }
+        }
 
+        var totalMinutes = Math.floor(totalSeconds / 60);
+
+        // Render stats
+        document.getElementById("statLessons").textContent = completedLessons.length;
+        document.getElementById("statModules").textContent = moduleCompleted.length;
         var hours = Math.floor(totalMinutes / 60);
         var mins = totalMinutes % 60;
         document.getElementById("statTime").textContent = hours + "h " + (mins > 0 ? mins + "m" : "");
-
         document.getElementById("statStreak").textContent = streak;
 
-        // Animate bars after a small delay
         setTimeout(function() {
-          var lessonPct = totalLessons > 0 ? (lessonsCompleted / totalLessons * 100) : 0;
-          var modulePct = totalModules > 0 ? (modulesFinished / totalModules * 100) : 0;
-          var timePct = Math.min((totalMinutes / 6000) * 100, 100); // 100h = full
-          var streakPct = Math.min((streak / 30) * 100, 100); // 30 days = full
-
+          var lessonPct = totalLessons > 0 ? (completedLessons.length / totalLessons * 100) : 0;
+          var modulePct = (moduleCompleted.length / 12 * 100);
+          var timePct = Math.min((totalMinutes / 6000) * 100, 100);
+          var streakPct = Math.min((streak / 30) * 100, 100);
           document.getElementById("barLessons").style.width = lessonPct + "%";
           document.getElementById("barModules").style.width = modulePct + "%";
           document.getElementById("barTime").style.width = timePct + "%";
           document.getElementById("barStreak").style.width = streakPct + "%";
         }, 200);
-      }
 
-      // ─── Render Module Progress Bars ───
-      function renderModules(data) {
+        // Render module progress bars
         var container = document.getElementById("moduleProgressList");
         container.innerHTML = "";
-
-        var modules = data.modules || data.moduleProgress || [];
-
-        // If API returns per-module data
-        if (modules.length > 0) {
-          modules.forEach(function(mod, i) {
-            var idx = i % MODULE_COLORS.length;
-            var color = MODULE_COLORS[idx];
-            var name = mod.title || mod.name || MODULE_NAMES[i] || ("Modul " + (i + 1));
-            var pct = mod.percentage || mod.progress || 0;
-            appendModuleBar(container, i + 1, name, pct, color);
-          });
-        } else {
-          // Render all 12 modules with 0% if no data
-          renderModulesPlaceholder();
-        }
-
-        // Animate after delay
+        moduleData.forEach(function(mod, i) {
+          var color = MODULE_COLORS[i % MODULE_COLORS.length];
+          var name = mod.title || MODULE_NAMES[i] || ("Modul " + (i+1));
+          appendModuleBar(container, i + 1, name, mod.percentage, color);
+        });
+        if (moduleData.length === 0) renderModulesPlaceholder();
         setTimeout(function() {
-          var fills = container.querySelectorAll(".module-bar-fill");
-          fills.forEach(function(fill) {
+          container.querySelectorAll(".module-bar-fill").forEach(function(fill) {
             fill.style.width = fill.getAttribute("data-width");
           });
         }, 400);
+
+        // Render certifications
+        if (moduleCompleted.length > 0) {
+          var certsContainer = document.getElementById("certsContainer");
+          certsContainer.innerHTML = "";
+          moduleCompleted.forEach(function(modId) {
+            var modName = MODULE_NAMES[modId - 1] || ("Modul " + modId);
+            var card = document.createElement("div");
+            card.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;";
+            card.innerHTML = '<span style="font-size:24px;">🏆</span><div><div style="font-size:14px;font-weight:600;">Modul ' + modId + ' completat</div><div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + modName + '</div></div>';
+            certsContainer.appendChild(card);
+          });
+        }
+
+        // Render recent lessons
+        var recent = completedLessons.slice(-5).reverse();
+        if (recent.length > 0 && typeof COURSE_DATA !== 'undefined') {
+          var recentContainer = document.getElementById("recentContainer");
+          recentContainer.innerHTML = "";
+          recent.forEach(function(lid) {
+            var parts = lid.split('.');
+            var modId = parseInt(parts[0]);
+            var mod = COURSE_DATA.modules.find(function(m) { return m.id === modId; });
+            if (mod && mod.lessons) {
+              var lesson = mod.lessons.find(function(l) { return l.id === lid; });
+              if (lesson) {
+                var item = document.createElement("div");
+                item.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:6px;cursor:pointer;";
+                item.onclick = function() { window.location.href = 'index.html'; };
+                item.innerHTML = '<span style="font-size:18px;">✓</span><div style="flex:1;"><div style="font-size:13px;font-weight:600;">' + lesson.title + '</div><div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + mod.title + '</div></div>';
+                recentContainer.appendChild(item);
+              }
+            }
+          });
+        }
       }
 
       function renderModulesPlaceholder() {
         var container = document.getElementById("moduleProgressList");
         container.innerHTML = "";
         MODULE_NAMES.forEach(function(name, i) {
-          var color = MODULE_COLORS[i % MODULE_COLORS.length];
-          appendModuleBar(container, i + 1, name, 0, color);
+          appendModuleBar(container, i + 1, name, 0, MODULE_COLORS[i % MODULE_COLORS.length]);
         });
       }
 
@@ -575,60 +626,9 @@
         var item = document.createElement("div");
         item.className = "module-progress-item";
         item.innerHTML =
-          '<div class="module-progress-top">' +
-            '<div>' +
-              '<span class="module-progress-number">M' + String(num).padStart(2, '0') + '</span>' +
-              '<span class="module-progress-title">' + name + '</span>' +
-            '</div>' +
-            '<span class="module-progress-pct" style="color:' + color + ';">' + Math.round(pct) + '%</span>' +
-          '</div>' +
-          '<div class="module-bar">' +
-            '<div class="module-bar-fill" data-width="' + pct + '%" style="background:' + color + ';"></div>' +
-          '</div>';
+          '<div class="module-progress-top"><div><span class="module-progress-number">M' + String(num).padStart(2,'0') + '</span><span class="module-progress-title">' + name + '</span></div><span class="module-progress-pct" style="color:' + color + ';">' + Math.round(pct) + '%</span></div>' +
+          '<div class="module-bar"><div class="module-bar-fill" data-width="' + pct + '%" style="background:' + color + ';"></div></div>';
         container.appendChild(item);
-      }
-
-      // ─── Render Certifications ───
-      function renderCerts(data) {
-        var certs = data.certifications || data.certificates || [];
-        if (certs.length === 0) return; // keep placeholder
-
-        var container = document.getElementById("certsContainer");
-        container.innerHTML = "";
-
-        certs.forEach(function(cert) {
-          var card = document.createElement("div");
-          card.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:12px;margin-bottom:8px;transition:all 0.2s;";
-          card.innerHTML =
-            '<span style="font-size:24px;">🏆</span>' +
-            '<div>' +
-              '<div style="font-size:14px;font-weight:600;">' + (cert.title || cert.name || "Certificat") + '</div>' +
-              '<div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + (cert.date || cert.earned_at || "") + '</div>' +
-            '</div>';
-          container.appendChild(card);
-        });
-      }
-
-      // ─── Render Recent Lessons ───
-      function renderRecent(data) {
-        var recent = data.recentLessons || data.recent_lessons || [];
-        if (recent.length === 0) return; // keep placeholder
-
-        var container = document.getElementById("recentContainer");
-        container.innerHTML = "";
-
-        recent.slice(0, 5).forEach(function(lesson) {
-          var item = document.createElement("div");
-          item.style.cssText = "background:var(--s1);border:1px solid var(--edge);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;margin-bottom:6px;transition:all 0.2s;cursor:pointer;";
-          item.innerHTML =
-            '<span style="font-size:18px;">📖</span>' +
-            '<div style="flex:1;">' +
-              '<div style="font-size:13px;font-weight:600;">' + (lesson.title || lesson.name || "Lectie") + '</div>' +
-              '<div style="font-size:11px;color:var(--ink50);margin-top:2px;">' + (lesson.module || "") + '</div>' +
-            '</div>' +
-            '<span style="font-family:var(--fontM);font-size:11px;color:var(--ink50);">' + (lesson.date || lesson.accessed_at || "") + '</span>';
-          container.appendChild(item);
-        });
       }
 
       // ─── Logout ───

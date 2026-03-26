@@ -79,15 +79,54 @@ if (COURSE_DATA.modules[0].lessons && COURSE_DATA.modules[0].lessons[0]) {
   );
 }
 
-// Add certificate to last lesson of Module 1
-if (COURSE_DATA.modules[0].lessons) {
-  const lastLesson = COURSE_DATA.modules[0].lessons[COURSE_DATA.modules[0].lessons.length - 1];
-  if (lastLesson) {
-    lastLesson.sections.push({
-      type: "certificate",
-      title: "Certificat de Completare",
-      description: "A completat cu succes Modulul 1: Fundamente & Mindset",
-      moduleName: "MODUL 1 — FUNDAMENTE & MINDSET"
-    });
+// Add quiz + certificate to last lesson of each module that has lessons
+COURSE_DATA.modules.forEach(function(mod) {
+  if (!mod.lessons || !mod.lessons.length) return;
+  var lastLesson = mod.lessons[mod.lessons.length - 1];
+  if (!lastLesson) return;
+
+  // Add quiz based on module content
+  var quizzes = {
+    1: {
+      title: "📝 Quiz — Modulul 1: Fundamente & Mindset",
+      questions: [
+        { question: "Ce înseamnă COD în e-commerce?", options: ["Card on Delivery", "Cash on Delivery", "Collect on Demand", "Cash on Demand"], correct: 1 },
+        { question: "Care este rata medie de neridicate pe COD în România?", options: ["5-10%", "15-25%", "40-50%", "60-70%"], correct: 1 },
+        { question: "Ce reduce cel mai eficient rata de neridicate?", options: ["Prețuri mai mici", "Confirmare SMS/telefon + livrare rapidă", "Reclame mai bune", "Mai multe produse"], correct: 1 },
+        { question: "Câte produse trebuie testate înainte de a găsi un câștigător?", options: ["1-2", "3-5", "10-20", "50+"], correct: 2 },
+        { question: "Care e cel mai important KPI în COD?", options: ["Numărul de like-uri", "Revenue-ul brut", "Profitul NET după toate costurile", "Numărul de comenzi"], correct: 2 },
+      ]
+    },
+    2: {
+      title: "📝 Quiz — Modulul 2: Research & Validare",
+      questions: [
+        { question: "Care e primul pas în validarea unui produs?", options: ["Cumperi stoc", "Verifici dacă are cerere reală pe piață", "Faci reclame", "Creezi site-ul"], correct: 1 },
+        { question: "Ce tool folosești pentru a spiona reclamele competitorilor?", options: ["Google Analytics", "Facebook Ad Library / Minea", "Shopify", "Instagram"], correct: 1 },
+        { question: "Ce marjă minimă e recomandată pentru un produs COD?", options: ["5%", "10%", "20-30%", "50%+"], correct: 2 },
+        { question: "Ce e un produs 'câștigător'?", options: ["Cel mai scump", "Cel cu cea mai mare marjă + cerere + wow factor", "Cel mai ieftin", "Cel mai popular pe TikTok"], correct: 1 },
+      ]
+    },
+    3: {
+      title: "📝 Quiz — Modulul 3: Import & Furnizori",
+      questions: [
+        { question: "Care e cea mai mare platformă de furnizori din lume?", options: ["Amazon", "eBay", "Alibaba", "Shopify"], correct: 2 },
+        { question: "Ce înseamnă DDP în import?", options: ["Direct Delivery Process", "Delivered Duty Paid (taxe plătite)", "Digital Distribution Platform", "Drop Direct Purchase"], correct: 1 },
+        { question: "Poți lucra doar cu furnizori din China?", options: ["Da, obligatoriu", "Nu, poți și din România sau UE", "Doar din UE", "Doar din Asia"], correct: 1 },
+      ]
+    },
+  };
+
+  if (quizzes[mod.id]) {
+    lastLesson.sections.push(quizzes[mod.id]);
+    // Set quiz type
+    lastLesson.sections[lastLesson.sections.length - 1].type = 'quiz';
   }
-}
+
+  // Add certificate
+  lastLesson.sections.push({
+    type: "certificate",
+    title: "Certificat de Completare",
+    description: "A completat cu succes Modulul " + mod.id + ": " + mod.title,
+    moduleName: "MODUL " + mod.id + " — " + mod.title.toUpperCase()
+  });
+});

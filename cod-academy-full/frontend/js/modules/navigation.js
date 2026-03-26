@@ -53,8 +53,11 @@ const Navigation = {
     const mod = COURSE_DATA.modules.find(m => m.id === moduleId);
     if (!mod) return;
 
+    // Stop tracking previous lesson time
+    TrackProgress.stopTracking();
+
     this.currentModule = mod;
-    
+
     // Update active states
     document.querySelectorAll('.sidebar-lesson').forEach(l => l.classList.remove('active'));
     const activeLesson = document.querySelector(`.sidebar-lesson[data-lesson="${lessonId}"]`);
@@ -72,6 +75,8 @@ const Navigation = {
       const lesson = mod.lessons.find(l => l.id === lessonId) || mod.lessons[0];
       this.currentLesson = lesson;
       LessonRenderer.render(mod, lesson);
+      // Track lesson view time
+      TrackProgress.trackLessonView(moduleId, lessonId);
     } else {
       LessonRenderer.renderComingSoon(mod);
     }
