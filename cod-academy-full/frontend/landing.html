@@ -147,11 +147,11 @@
       .footer{padding:24px 20px}
       .vid-grid{grid-template-columns:1fr 1fr}
       .mod-grid{grid-template-columns:1fr}
-      .test-grid{grid-template-columns:1fr}
       .bonus-grid{grid-template-columns:1fr}
       .step{flex-direction:column;gap:12px}
       .step-num{font-size:32px;min-width:auto}
       .hero-btns{flex-direction:column}
+      nav a[href^="#"]{display:none!important}
     }
     @media(max-width:480px){
       .vid-grid{grid-template-columns:1fr}
@@ -163,20 +163,33 @@
 <div class="grain"></div>
 <div class="glow-orb" id="glowOrb"></div>
 
+<!-- ═══ Top Nav ═══ -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:200;padding:16px 40px;display:flex;align-items:center;gap:16px;background:rgba(5,5,5,.6);backdrop-filter:blur(20px);border-bottom:1px solid #1A1A1A">
+  <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#E8E8E8">
+    <span style="width:8px;height:8px;border-radius:50%;background:#00FF88;box-shadow:0 0 10px #00FF8840"></span>
+    <span style="font-weight:700;font-size:15px">COD Academy</span>
+  </a>
+  <span style="flex:1"></span>
+  <a href="#videos" style="color:#666;text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .2s" onmouseover="this.style.color='#E8E8E8';this.style.background='#1A1A1A'" onmouseout="this.style.color='#666';this.style.background='transparent'">Video-uri</a>
+  <a href="#modules" style="color:#666;text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .2s" onmouseover="this.style.color='#E8E8E8';this.style.background='#1A1A1A'" onmouseout="this.style.color='#666';this.style.background='transparent'">Module</a>
+  <a href="#faq" style="color:#666;text-decoration:none;font-size:13px;font-weight:500;padding:6px 12px;border-radius:6px;transition:all .2s" onmouseover="this.style.color='#E8E8E8';this.style.background='#1A1A1A'" onmouseout="this.style.color='#666';this.style.background='transparent'">FAQ</a>
+  <a href="login.html" class="cta" style="padding:10px 24px;font-size:14px">Intră în Academy →</a>
+</nav>
+
 <!-- ═══ Side Nav ═══ -->
 <div class="side-nav" id="sideNav">
   <div class="nav-dot active" data-section="hero"><span class="nav-dot-label">Intro</span></div>
   <div class="nav-dot" data-section="problem"><span class="nav-dot-label">Problema</span></div>
-  <div class="nav-dot" data-section="modules"><span class="nav-dot-label">Module</span></div>
   <div class="nav-dot" data-section="videos"><span class="nav-dot-label">Video-uri</span></div>
-  <div class="nav-dot" data-section="testimonials"><span class="nav-dot-label">Rezultate</span></div>
+  <div class="nav-dot" data-section="modules"><span class="nav-dot-label">Module</span></div>
+  <div class="nav-dot" data-section="testimonials"><span class="nav-dot-label">Cum funcționează</span></div>
   <div class="nav-dot" data-section="bonuses"><span class="nav-dot-label">Bonusuri</span></div>
   <div class="nav-dot" data-section="faq"><span class="nav-dot-label">FAQ</span></div>
   <div class="nav-dot" data-section="cta"><span class="nav-dot-label">Start</span></div>
 </div>
 
 <!-- ═══ HERO ═══ -->
-<section class="s" id="hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative">
+<section class="s" id="hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:100px">
   <div class="fade" data-delay="0">
     <div class="s-label">COD Academy — E-Commerce România</div>
   </div>
@@ -191,8 +204,8 @@
     <p class="s-sub">De la zero la primele venituri. Program testat de studenți reali din România. 12 module, 50+ lecții, strategii practice, suport dedicat.</p>
   </div>
   <div class="fade hero-btns" data-delay="0.45" style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
-    <a href="login.html" class="cta">Începe acum →</a>
-    <a href="#videos" class="cta-outline">Vezi video-uri</a>
+    <a href="login.html" class="cta">Intră în Academy →</a>
+    <a href="#videos" class="cta-outline">Vezi povești de succes</a>
   </div>
   <div class="fade" data-delay="0.6" style="display:flex;gap:12px;margin-top:48px;flex-wrap:wrap">
     <span class="tag tag-green">2,847+ studenți</span>
@@ -243,6 +256,20 @@
   </div>
 </section>
 
+<!-- ═══ VIDEOS — PLAYABLE, BY CATEGORY ═══ -->
+<section class="s" id="videos">
+  <div class="fade">
+    <div class="s-label">Direct de pe YouTube</div>
+    <h2 class="s-title">Nu vorbim.<br><span class="green">Arătăm.</span></h2>
+    <p class="s-sub">Video-uri reale de pe canalul ProfesorulVlad. Click pe oricare — rulează direct pe loc.</p>
+  </div>
+
+  <div class="fade" data-delay="0.1" style="margin-top:32px">
+    <div class="cat-tabs" id="catTabs"></div>
+    <div class="vid-grid" id="vidGrid"></div>
+  </div>
+</section>
+
 <!-- ═══ MODULES ═══ -->
 <section class="s" id="modules">
   <div class="fade">
@@ -266,28 +293,26 @@
   </div>
 </section>
 
-<!-- ═══ VIDEOS — IN-PLACE PLAYABLE, BY CATEGORY ═══ -->
-<section class="s" id="videos">
-  <div class="fade">
-    <div class="s-label">Direct de pe YouTube</div>
-    <h2 class="s-title">Nu vorbim.<br><span class="green">Arătăm.</span></h2>
-    <p class="s-sub">Video-uri reale de pe canalul ProfesorulVlad. Click pe oricare — rulează direct pe loc.</p>
-  </div>
-
-  <div class="fade" data-delay="0.1" style="margin-top:32px">
-    <div class="cat-tabs" id="catTabs"></div>
-    <div class="vid-grid" id="vidGrid"></div>
-  </div>
-</section>
-
-<!-- ═══ TESTIMONIALS ═══ -->
+<!-- ═══ HOW IT WORKS ═══ -->
 <section class="s" id="testimonials">
   <div class="fade">
-    <div class="s-label">Rezultate reale</div>
-    <h2 class="s-title">Povești de succes.<br><span class="green">Fără filtre.</span></h2>
-    <p class="s-sub">Studenți reali, rezultate reale. Click pe video — rulează direct.</p>
+    <div class="s-label">Cum funcționează</div>
+    <h2 class="s-title">3 pași.<br><span class="green">Fără complicații.</span></h2>
   </div>
-  <div class="vid-grid" style="margin-top:48px" id="testVidGrid"></div>
+  <div style="max-width:600px;margin-top:48px">
+    <div class="fade step" data-delay="0">
+      <div class="step-num">01</div>
+      <div><div class="step-title">Creează-ți cont gratuit</div><div class="step-desc">Un click și ești în platformă. Acces instant la toate cele 12 module și 50+ lecții video.</div></div>
+    </div>
+    <div class="fade step" data-delay="0.15">
+      <div class="step-num">02</div>
+      <div><div class="step-title">Urmează modulele pas cu pas</div><div class="step-desc">Fiecare modul te duce mai aproape de primul profit. De la idee la primul colet livrat.</div></div>
+    </div>
+    <div class="fade step" data-delay="0.3">
+      <div class="step-num">03</div>
+      <div><div class="step-title">Aplică și scalează</div><div class="step-desc">Folosești strategiile testate, lansezi produse, și scalezi cu suportul comunității.</div></div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ BONUSES ═══ -->
@@ -356,7 +381,8 @@
     <p class="s-sub">Alătură-te celor 2,847+ studenți care au ales drumul spre profit cu metoda COD.</p>
   </div>
   <div class="fade" data-delay="0.15" style="display:flex;gap:16px;margin-top:40px;flex-wrap:wrap">
-    <a href="login.html" class="cta">Începe acum — gratuit →</a>
+    <a href="login.html" class="cta" style="padding:18px 44px;font-size:18px">Intră în Academy →</a>
+    <a href="https://www.youtube.com/@profesorulvlad" target="_blank" rel="noopener" class="cta-outline">YouTube ProfesorulVlad</a>
   </div>
   <div class="fade guarantee" data-delay="0.3" style="margin-top:48px;max-width:500px">
     <div style="font-size:24px;margin-bottom:8px">🤝</div>
@@ -430,7 +456,7 @@ var VIDEOS = [
   {id:"r9FDzF9ABI0",title:"România, antreprenoriat, magazin online",cat:"mindset"},
 ];
 
-var currentCat = null;
+var currentCat = 'success';
 
 // ═══ Render category tabs ═══
 function renderCatTabs() {
@@ -490,11 +516,7 @@ document.addEventListener('keydown', function(e) {
 
 // ═══ Init grids ═══
 renderCatTabs();
-renderVidGrid('vidGrid', VIDEOS);
-
-// Testimonials — all success stories in the test grid
-var TEST_VIDEOS = VIDEOS.filter(function(v) { return v.cat === 'success'; });
-renderVidGrid('testVidGrid', TEST_VIDEOS);
+filterCat('success');
 
 // ═══ FadeIn on scroll (IntersectionObserver) ═══
 function observeFades() {
@@ -517,7 +539,7 @@ function observeFades() {
 observeFades();
 
 // ═══ Side nav active tracking ═══
-var sections = ['hero','problem','modules','videos','testimonials','bonuses','faq','cta'];
+var sections = ['hero','problem','videos','modules','testimonials','bonuses','faq','cta'];
 window.addEventListener('scroll', function() {
   for (var i = 0; i < sections.length; i++) {
     var el = document.getElementById(sections[i]);
