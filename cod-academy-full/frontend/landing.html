@@ -25,8 +25,21 @@
     /* Glow orb follows mouse */
     .glow-orb{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#00FF8806,transparent 70%);pointer-events:none;transition:left .6s ease,top .6s ease;z-index:0;transform:translate(-50%,-50%)}
 
+    /* ─── Background visuals ─── */
+    .bg-vis{position:absolute;pointer-events:none;z-index:0;opacity:.04}
+    .bg-vis svg{width:100%;height:100%}
+    .bg-grid{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.03;
+      background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+      background-size:60px 60px}
+    .bg-dots{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.04;
+      background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1px);
+      background-size:30px 30px}
+    @keyframes dashMove{to{stroke-dashoffset:0}}
+    @keyframes growUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+    @keyframes pulseGlow{0%,100%{opacity:.03}50%{opacity:.06}}
+
     /* ─── Sections ─── */
-    .s{padding:120px 80px;position:relative;z-index:1}
+    .s{padding:120px 80px;position:relative;z-index:1;overflow:hidden}
     .s-label{font-family:'Space Mono',monospace;font-size:12px;color:#00FF88;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
     .s-title{font-size:clamp(28px,3.5vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.03em;max-width:750px}
     .s-sub{font-size:17px;color:#666;max-width:520px;line-height:1.75;margin-top:20px}
@@ -194,6 +207,21 @@
 
 <!-- ═══ HERO ═══ -->
 <section class="s" id="hero" style="min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:100px">
+  <!-- Background: ascending growth chart -->
+  <div class="bg-grid"></div>
+  <svg class="bg-vis" style="right:0;top:10%;width:55%;height:80%" viewBox="0 0 600 400" fill="none" preserveAspectRatio="none">
+    <defs><linearGradient id="heroGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#00FF88" stop-opacity="0"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".15"/></linearGradient></defs>
+    <path d="M0 380 Q100 350 150 300 T300 200 T450 100 T600 30 L600 400 L0 400Z" fill="url(#heroGrad)"/>
+    <path d="M0 380 Q100 350 150 300 T300 200 T450 100 T600 30" stroke="#00FF88" stroke-width="1.5" fill="none" stroke-dasharray="8 6" style="animation:dashMove 30s linear infinite;stroke-dashoffset:1000"/>
+    <!-- Candle sticks -->
+    <line x1="100" y1="340" x2="100" y2="310" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="96" y="315" width="8" height="20" fill="#00FF88" opacity=".15" rx="1"/>
+    <line x1="200" y1="280" x2="200" y2="240" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="196" y="245" width="8" height="25" fill="#00FF88" opacity=".15" rx="1"/>
+    <line x1="300" y1="220" x2="300" y2="170" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="296" y="175" width="8" height="30" fill="#00FF88" opacity=".15" rx="1"/>
+    <line x1="400" y1="160" x2="400" y2="100" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="396" y="105" width="8" height="35" fill="#00FF88" opacity=".2" rx="1"/>
+    <line x1="500" y1="100" x2="500" y2="40" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="496" y="45" width="8" height="40" fill="#00FF88" opacity=".25" rx="1"/>
+  </svg>
+  <!-- Radial accent -->
+  <div style="position:absolute;top:15%;right:10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#00FF8808,transparent 70%);pointer-events:none;animation:pulseGlow 8s ease-in-out infinite"></div>
   <div class="fade" data-delay="0">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
       <svg width="36" height="36" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#00FF88" stroke-width="2"/><path d="M9 14.5L12.5 18L19 10" stroke="#00FF88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -238,6 +266,19 @@
 
 <!-- ═══ ABOUT PROFESORUL VLAD ═══ -->
 <section class="s" id="about">
+  <!-- Background: network/constellation pattern -->
+  <svg class="bg-vis" style="inset:0;width:100%;height:100%" viewBox="0 0 800 500" fill="none" preserveAspectRatio="xMidYMid slice">
+    <circle cx="100" cy="80" r="3" fill="#00FF88" opacity=".4"/><circle cx="300" cy="150" r="2" fill="#00FF88" opacity=".3"/>
+    <circle cx="500" cy="60" r="3" fill="#00FF88" opacity=".35"/><circle cx="700" cy="200" r="2" fill="#00FF88" opacity=".25"/>
+    <circle cx="200" cy="300" r="2" fill="#3b82f6" opacity=".3"/><circle cx="600" cy="350" r="3" fill="#3b82f6" opacity=".25"/>
+    <circle cx="400" cy="400" r="2" fill="#a855f7" opacity=".2"/><circle cx="150" cy="450" r="2" fill="#a855f7" opacity=".15"/>
+    <line x1="100" y1="80" x2="300" y2="150" stroke="#00FF88" stroke-width=".5" opacity=".15"/>
+    <line x1="300" y1="150" x2="500" y2="60" stroke="#00FF88" stroke-width=".5" opacity=".12"/>
+    <line x1="500" y1="60" x2="700" y2="200" stroke="#00FF88" stroke-width=".5" opacity=".1"/>
+    <line x1="200" y1="300" x2="400" y2="400" stroke="#3b82f6" stroke-width=".5" opacity=".1"/>
+    <line x1="400" y1="400" x2="600" y2="350" stroke="#a855f7" stroke-width=".5" opacity=".08"/>
+    <line x1="300" y1="150" x2="200" y2="300" stroke="#00FF88" stroke-width=".5" opacity=".08"/>
+  </svg>
   <div class="fade">
     <div class="s-label">Cine predă</div>
     <h2 class="s-title">
@@ -287,6 +328,12 @@
 
 <!-- ═══ PROBLEM / SOLUTION ═══ -->
 <section class="s" id="problem">
+  <!-- Background: declining then rising chart (problem → solution) -->
+  <svg class="bg-vis" style="left:0;bottom:0;width:100%;height:60%" viewBox="0 0 800 300" fill="none" preserveAspectRatio="none">
+    <defs><linearGradient id="probGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#FF4444" stop-opacity=".08"/><stop offset="50%" stop-color="#FF4444" stop-opacity=".02"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".08"/></linearGradient></defs>
+    <path d="M0 50 Q100 60 200 120 T400 250 Q500 200 550 150 T700 60 L800 20 L800 300 L0 300Z" fill="url(#probGrad)"/>
+    <path d="M0 50 Q100 60 200 120 T400 250 Q500 200 550 150 T700 60 L800 20" stroke="url(#probGrad)" stroke-width="1" fill="none" opacity=".5"/>
+  </svg>
   <div class="fade">
     <div class="s-label">De ce COD?</div>
     <h2 class="s-title">
@@ -322,6 +369,8 @@
 
 <!-- ═══ VIDEOS — PLAYABLE, BY CATEGORY ═══ -->
 <section class="s" id="videos">
+  <div class="bg-dots"></div>
+  <div style="position:absolute;bottom:0;left:5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#3b82f608,transparent 70%);pointer-events:none"></div>
   <div class="fade">
     <div class="s-label">Direct de pe YouTube</div>
     <h2 class="s-title">Nu vorbim.<br><span class="green">Arătăm.</span></h2>
@@ -336,6 +385,23 @@
 
 <!-- ═══ MODULES ═══ -->
 <section class="s" id="modules">
+  <!-- Background: ascending bar chart -->
+  <svg class="bg-vis" style="right:0;bottom:0;width:50%;height:70%" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
+    <defs><linearGradient id="barGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#00FF88" stop-opacity="0"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".2"/></linearGradient></defs>
+    <rect x="20" y="250" width="20" height="50" fill="url(#barGrad)" rx="2"/>
+    <rect x="55" y="220" width="20" height="80" fill="url(#barGrad)" rx="2"/>
+    <rect x="90" y="200" width="20" height="100" fill="url(#barGrad)" rx="2"/>
+    <rect x="125" y="170" width="20" height="130" fill="url(#barGrad)" rx="2"/>
+    <rect x="160" y="150" width="20" height="150" fill="url(#barGrad)" rx="2"/>
+    <rect x="195" y="120" width="20" height="180" fill="url(#barGrad)" rx="2"/>
+    <rect x="230" y="100" width="20" height="200" fill="url(#barGrad)" rx="2"/>
+    <rect x="265" y="70" width="20" height="230" fill="url(#barGrad)" rx="2"/>
+    <rect x="300" y="45" width="20" height="255" fill="url(#barGrad)" rx="2"/>
+    <rect x="335" y="20" width="20" height="280" fill="url(#barGrad)" rx="2"/>
+    <rect x="370" y="5" width="20" height="295" fill="url(#barGrad)" rx="2"/>
+    <!-- Trend line -->
+    <path d="M30 250 L65 220 L100 200 L135 170 L170 150 L205 120 L240 100 L275 70 L310 45 L345 20 L380 5" stroke="#00FF88" stroke-width="1" fill="none" opacity=".3" stroke-dasharray="4 4"/>
+  </svg>
   <div class="fade">
     <div class="s-label">Curriculum</div>
     <h2 class="s-title">12 module.<br><span class="green">Zero bullshit.</span></h2>
@@ -359,6 +425,16 @@
 
 <!-- ═══ HOW IT WORKS ═══ -->
 <section class="s" id="testimonials">
+  <!-- Background: funnel/flow visualization -->
+  <svg class="bg-vis" style="right:5%;top:10%;width:40%;height:80%" viewBox="0 0 300 400" fill="none" preserveAspectRatio="none">
+    <defs><linearGradient id="funnelGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#00FF88" stop-opacity=".12"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".02"/></linearGradient></defs>
+    <!-- Funnel shape -->
+    <path d="M50 20 L250 20 L200 150 L210 160 L180 280 L190 290 L160 390 L140 390 L110 290 L120 280 L100 160 L90 150Z" fill="url(#funnelGrad)" stroke="#00FF88" stroke-width=".5" opacity=".5"/>
+    <!-- Arrow indicators -->
+    <path d="M150 60 L150 100 M145 90 L150 100 L155 90" stroke="#00FF88" stroke-width="1" opacity=".2"/>
+    <path d="M150 180 L150 220 M145 210 L150 220 L155 210" stroke="#00FF88" stroke-width="1" opacity=".2"/>
+    <path d="M150 310 L150 350 M145 340 L150 350 L155 340" stroke="#00FF88" stroke-width="1" opacity=".2"/>
+  </svg>
   <div class="fade">
     <div class="s-label">Cum funcționează</div>
     <h2 class="s-title">3 pași.<br><span class="green">Fără complicații.</span></h2>
@@ -381,6 +457,8 @@
 
 <!-- ═══ BONUSES ═══ -->
 <section class="s" id="bonuses">
+  <div class="bg-grid"></div>
+  <div style="position:absolute;top:10%;right:10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,#a855f708,transparent 70%);pointer-events:none"></div>
   <div class="fade">
     <div class="s-label">Bonusuri exclusive</div>
     <h2 class="s-title">Instrumente.<br><span class="green">Gratuite.</span></h2>
@@ -441,6 +519,13 @@
 
 <!-- ═══ FINAL CTA ═══ -->
 <section class="s" id="cta" style="min-height:60vh;display:flex;flex-direction:column;justify-content:center">
+  <!-- Background: large ascending curve -->
+  <svg class="bg-vis" style="inset:0;width:100%;height:100%" viewBox="0 0 800 400" fill="none" preserveAspectRatio="none">
+    <defs><linearGradient id="ctaGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#00FF88" stop-opacity="0"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".12"/></linearGradient></defs>
+    <path d="M0 400 Q200 380 350 300 T600 120 T800 20 L800 400Z" fill="url(#ctaGrad)"/>
+    <path d="M0 400 Q200 380 350 300 T600 120 T800 20" stroke="#00FF88" stroke-width="1" fill="none" opacity=".15"/>
+  </svg>
+  <div style="position:absolute;left:20%;top:20%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#00FF8806,transparent 60%);pointer-events:none;animation:pulseGlow 6s ease-in-out infinite"></div>
   <div class="fade">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#00FF88" stroke-width="2"/><path d="M9 14.5L12.5 18L19 10" stroke="#00FF88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
