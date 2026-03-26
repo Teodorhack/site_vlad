@@ -41,34 +41,34 @@ if (COURSE_DATA.modules[0].lessons && COURSE_DATA.modules[0].lessons[0]) {
       title: "📁 Resurse & Materiale",
       items: [
         {
-          title: "Folder Complet Resurse COD Academy",
-          description: "Toate materialele, template-urile și ghidurile din curs",
-          url: "https://drive.google.com/drive/folders/1gnSdgCOnCRcbamBb40QVfEN1jPQEXkee?usp=drive_link",
-          icon: "drive"
+          title: "Calculator Profitabilitate Produse",
+          description: "Calculatorul complet de potențial produse — introdu cifrele, vezi instant dacă merită",
+          url: "https://docs.google.com/spreadsheets/d/1N_CyaCPJ7BHVlh8ornGf5V47w3yACkWw/edit?gid=1518533618#gid=1518533618",
+          icon: "sheet"
         },
         {
-          title: "Shopify 97% OFF — Deal Exclusiv",
-          description: "Obține Shopify la cel mai mic preț posibil",
+          title: "Shopify — 3$ pe 3 luni (în loc de 210$)",
+          description: "Aplicația pe care îți faci site-ul și paginile de produs",
           url: "https://shopify.pxf.io/JK7vbr",
           icon: "tool"
         },
         {
-          title: "Minea Spy Tool — Reducere -20%",
-          description: "Cel mai bun tool de spy pentru produse câștigătoare",
+          title: "Minea — Găsește produse ușor (-20% reducere)",
+          description: "Aplicația unde găsești produse câștigătoare foarte ușor",
           url: "https://app.minea.com/en/plans/premium?ref=cashondelivery",
           icon: "tool"
         },
         {
-          title: "Alibaba — Furnizori Verificați",
+          title: "Alibaba — De unde cumperi stoc",
           description: "Cea mai mare platformă de furnizori din lume",
-          url: "https://www.alibaba.com",
+          url: "https://www.alibaba.com/",
           icon: "link"
         },
         {
-          title: "YouTube ProfesorulVlad",
-          description: "Canal YouTube cu tutoriale gratuite și strategii",
-          url: "https://www.youtube.com/@profesorulvlad",
-          icon: "video"
+          title: "Instagram @vladprofesorul",
+          description: "Mă găsești oricând pe Instagram dacă ai nevoie de ajutor",
+          url: "https://linktw.in/NrzVVv",
+          icon: "link"
         }
       ]
     },
