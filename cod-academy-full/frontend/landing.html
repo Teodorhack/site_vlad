@@ -94,9 +94,17 @@
     .vid-item:hover .vid-play-overlay{background:rgba(0,0,0,.1)}
     .vid-play-btn{width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;transition:all .3s;color:#fff;font-size:18px}
     .vid-item:hover .vid-play-btn{background:#00FF88;color:#050505;box-shadow:0 0 24px #00FF8840}
-    .vid-embed{width:100%;aspect-ratio:16/9;border:none;display:block}
     .vid-info{padding:12px 14px}
     .vid-title{font-size:13px;font-weight:600;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+    /* ─── Video Lightbox Modal ─── */
+    .vid-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px}
+    .vid-modal.open{display:flex}
+    .vid-modal-inner{width:100%;max-width:900px;position:relative}
+    .vid-modal-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:16px;overflow:hidden;box-shadow:0 0 80px rgba(0,255,136,.08)}
+    .vid-modal-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .vid-modal-close{position:absolute;top:-40px;right:0;background:none;border:1px solid #333;color:#aaa;padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:600;transition:all .2s;z-index:5}
+    .vid-modal-close:hover{border-color:#FF4444;color:#FF4444}
 
     /* ─── FAQ ─── */
     .faq-item{background:#0A0A0A;border:1px solid #1A1A1A;border-radius:12px;overflow:hidden;margin-bottom:8px;transition:border-color .2s}
@@ -227,9 +235,10 @@
       <div style="font-size:14px;color:#555;line-height:1.7">Fulfillment centres se ocupă de tot. Tu faci marketing, ei trimit coletele. Investiție minimă, risc controlat.</div>
     </div>
   </div>
-  <div class="fade" data-delay="0.2" style="margin-top:40px;border-radius:16px;overflow:hidden;border:1px solid #1A1A1A;max-width:700px">
+  <div class="fade" data-delay="0.2" style="margin-top:40px;border-radius:16px;overflow:hidden;border:1px solid #1A1A1A;max-width:700px;cursor:pointer" onclick="openModal('K8s-bs7BWpc')">
     <div style="position:relative;padding-bottom:56.25%;height:0">
-      <iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe>
+      <img src="https://img.youtube.com/vi/K8s-bs7BWpc/hqdefault.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" alt="Validare Produs">
+      <div class="vid-play-overlay"><div class="vid-play-btn" style="width:56px;height:56px;font-size:22px">▶</div></div>
     </div>
   </div>
 </section>
@@ -317,13 +326,13 @@
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">📹</span><span class="tag" style="border-color:#3b82f630;color:#3b82f6;background:#3b82f608">NEW</span></div>
       <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Tutorial Facebook Ads</h4>
       <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:4px">Tutorial complet de Facebook Ads pentru COD România.</p>
-      <div class="bonus-video"><iframe src="https://www.youtube-nocookie.com/embed/XulvgOypz04?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+      <div class="bonus-video" onclick="openModal('XulvgOypz04')" style="cursor:pointer"><img src="https://img.youtube.com/vi/XulvgOypz04/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0" alt="Tutorial Facebook Ads"><div class="vid-play-overlay"><div class="vid-play-btn">▶</div></div></div>
     </div>
     <div class="fade card" data-delay="0.5">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px"><span style="font-size:28px">✅</span><span class="tag tag-green">FREE</span></div>
       <h4 style="font-size:16px;font-weight:700;margin-bottom:6px">Tutorial Validare Produs</h4>
       <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:4px">Cum validezi un produs înainte să investești.</p>
-      <div class="bonus-video"><iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen loading="lazy"></iframe></div>
+      <div class="bonus-video" onclick="openModal('K8s-bs7BWpc')" style="cursor:pointer"><img src="https://img.youtube.com/vi/K8s-bs7BWpc/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0" alt="Tutorial Validare Produs"><div class="vid-play-overlay"><div class="vid-play-btn">▶</div></div></div>
     </div>
   </div>
 </section>
@@ -365,6 +374,16 @@
     <a href="login.html">Login platformă</a>
   </div>
 </footer>
+
+<!-- ═══ VIDEO MODAL ═══ -->
+<div class="vid-modal" id="vidModal" onclick="closeModal(event)">
+  <div class="vid-modal-inner">
+    <button class="vid-modal-close" onclick="closeModal()">✕ Închide</button>
+    <div class="vid-modal-wrap">
+      <iframe id="modalIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
 
 <script>
 // ═══ VIDEO DATA — Categorized from ProfesorulVlad ═══
@@ -436,7 +455,7 @@ function renderVidGrid(containerId, videos) {
   container.innerHTML = videos.map(function(v, i) {
     var safeTitle = v.title.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     return '<div class="vid-item fade" id="vid-' + v.id + '">' +
-      '<div class="vid-thumb-wrap" onclick="playInPlace(\'' + v.id + '\')">' +
+      '<div class="vid-thumb-wrap" onclick="openModal(\'' + v.id + '\')">' +
         '<img src="https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg" alt="' + safeTitle + '" loading="lazy">' +
         '<div class="vid-play-overlay"><div class="vid-play-btn">▶</div></div>' +
       '</div>' +
@@ -446,20 +465,28 @@ function renderVidGrid(containerId, videos) {
   observeFades();
 }
 
-// ═══ Play video IN-PLACE — replaces thumbnail with iframe ═══
-function playInPlace(id) {
-  var item = document.getElementById('vid-' + id);
-  if (!item) return;
-  var thumbWrap = item.querySelector('.vid-thumb-wrap');
-  if (!thumbWrap) return;
-  // Replace thumbnail with iframe
-  var iframe = document.createElement('iframe');
-  iframe.className = 'vid-embed';
-  iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1';
-  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-  iframe.allowFullscreen = true;
-  thumbWrap.replaceWith(iframe);
+// ═══ Open video in modal lightbox ═══
+function openModal(id) {
+  var modal = document.getElementById('vidModal');
+  var iframe = document.getElementById('modalIframe');
+  iframe.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&origin=' + encodeURIComponent(window.location.origin);
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('vidModal') && !e.target.classList.contains('vid-modal-close')) return;
+  var modal = document.getElementById('vidModal');
+  var iframe = document.getElementById('modalIframe');
+  iframe.src = '';
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
 
 // ═══ Init grids ═══
 renderCatTabs();

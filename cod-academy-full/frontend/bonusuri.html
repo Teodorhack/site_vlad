@@ -544,8 +544,9 @@
         </div>
         <h3 class="card-title">Tutorial Facebook Ads</h3>
         <p class="card-desc">Tutorial complet de Facebook Ads pentru e-commerce COD Romania</p>
-        <div class="card-video">
-          <iframe src="https://www.youtube-nocookie.com/embed/XulvgOypz04?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <div class="card-video" onclick="openVidModal('XulvgOypz04')" style="cursor:pointer">
+          <img src="https://img.youtube.com/vi/XulvgOypz04/hqdefault.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" alt="Tutorial Facebook Ads" loading="lazy">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)"><div style="width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">▶</div></div>
         </div>
       </div>
 
@@ -557,8 +558,9 @@
         </div>
         <h3 class="card-title">Tutorial Validare Produs</h3>
         <p class="card-desc">Cum validezi un produs inainte sa investesti — metoda testata</p>
-        <div class="card-video">
-          <iframe src="https://www.youtube-nocookie.com/embed/K8s-bs7BWpc?rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+        <div class="card-video" onclick="openVidModal('K8s-bs7BWpc')" style="cursor:pointer">
+          <img src="https://img.youtube.com/vi/K8s-bs7BWpc/hqdefault.jpg" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover" alt="Tutorial Validare" loading="lazy">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3)"><div style="width:48px;height:48px;border-radius:50%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">▶</div></div>
         </div>
       </div>
 
@@ -567,25 +569,22 @@
     <!-- ── VIDEO SHOWCASE ── -->
     <h2 class="section-title">Video-uri Recomandate</h2>
     <section class="video-section">
-      <div class="video-featured" id="videoFeatured">
-        <iframe src="https://www.youtube.com/embed/XulvgOypz04" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
       <div class="video-grid">
-        <div class="video-thumb" onclick="switchVideo('XulvgOypz04')">
+        <div class="video-thumb" onclick="openVidModal('XulvgOypz04')">
           <img src="https://img.youtube.com/vi/XulvgOypz04/hqdefault.jpg" alt="Cum sa faci bani cu COD" loading="lazy">
           <div class="video-thumb-title">Cum sa faci bani cu COD</div>
         </div>
-        <div class="video-thumb" onclick="switchVideo('K8s-bs7BWpc')">
+        <div class="video-thumb" onclick="openVidModal('K8s-bs7BWpc')">
           <img src="https://img.youtube.com/vi/K8s-bs7BWpc/hqdefault.jpg" alt="Validare Produs Pas cu Pas" loading="lazy">
           <div class="video-thumb-title">Validare Produs Pas cu Pas</div>
         </div>
-        <div class="video-thumb" onclick="switchVideo('4JHgdgMEN94')">
+        <div class="video-thumb" onclick="openVidModal('4JHgdgMEN94')">
           <img src="https://img.youtube.com/vi/4JHgdgMEN94/hqdefault.jpg" alt="Testimonial Student #1" loading="lazy">
-          <div class="video-thumb-title">Testimonial Student #1</div>
+          <div class="video-thumb-title">De pe santier la 92.000 lei profit</div>
         </div>
-        <div class="video-thumb" onclick="switchVideo('WUNpMn--4AY')">
+        <div class="video-thumb" onclick="openVidModal('WUNpMn--4AY')">
           <img src="https://img.youtube.com/vi/WUNpMn--4AY/hqdefault.jpg" alt="Testimonial Student #2" loading="lazy">
-          <div class="video-thumb-title">Testimonial Student #2</div>
+          <div class="video-thumb-title">Paul — 40.000 RON profit</div>
         </div>
       </div>
     </section>
@@ -630,6 +629,16 @@
 
   </div>
 
+  <!-- Video Modal -->
+  <div id="vidModal" onclick="closeVidModal(event)" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px">
+    <div style="width:100%;max-width:900px;position:relative">
+      <button class="modal-close-btn" onclick="closeVidModal()" style="position:absolute;top:-40px;right:0;background:none;border:1px solid #333;color:#aaa;padding:8px 18px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:600">✕ Închide</button>
+      <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:16px;overflow:hidden;box-shadow:0 0 80px rgba(0,255,136,.08)">
+        <iframe id="modalIframe" src="" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ SCRIPTS ═══ -->
   <script>
     // Theme toggle
@@ -650,11 +659,22 @@
       window.location.href = 'login.html';
     }
 
-    // Switch featured video
-    function switchVideo(videoId) {
-      var container = document.getElementById('videoFeatured');
-      container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    // Video modal
+    function openVidModal(videoId) {
+      var modal = document.getElementById('vidModal');
+      var iframe = document.getElementById('modalIframe');
+      iframe.src = 'https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&origin=' + encodeURIComponent(window.location.origin);
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
     }
+    function closeVidModal(e) {
+      if (e && e.target !== document.getElementById('vidModal') && !e.target.classList.contains('modal-close-btn')) return;
+      var modal = document.getElementById('vidModal');
+      document.getElementById('modalIframe').src = '';
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeVidModal(); });
 
     // Staggered card reveal on scroll
     (function() {
