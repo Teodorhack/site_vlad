@@ -13,16 +13,17 @@
 
     body{
       font-family:'Outfit',sans-serif;
-      background:#050505;
+      background:#060606;
       background-image:
-        radial-gradient(ellipse at 20% 0%, #1a150a 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 15%, #0f1a0a 0%, transparent 40%),
-        radial-gradient(ellipse at 50% 35%, #0d0d05 0%, transparent 35%),
-        radial-gradient(ellipse at 10% 55%, #1a1308 0%, transparent 40%),
-        radial-gradient(ellipse at 90% 65%, #0a1a0d 0%, transparent 35%),
-        radial-gradient(ellipse at 40% 85%, #15100a 0%, transparent 40%),
-        radial-gradient(ellipse at 70% 95%, #0d1a10 0%, transparent 35%),
-        linear-gradient(180deg, #050505 0%, #080706 20%, #050505 40%, #0a0806 60%, #050505 80%, #080705 100%);
+        radial-gradient(ellipse at 15% 0%, #2a2010 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 10%, #0d2a12 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 25%, #18140c 0%, transparent 40%),
+        radial-gradient(ellipse at 5% 45%, #2a1e0e 0%, transparent 45%),
+        radial-gradient(ellipse at 95% 55%, #0c2a14 0%, transparent 40%),
+        radial-gradient(ellipse at 30% 70%, #201a10 0%, transparent 45%),
+        radial-gradient(ellipse at 70% 85%, #102a18 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 95%, #1a1408 0%, transparent 40%),
+        linear-gradient(180deg, #080808 0%, #0c0a07 15%, #080808 30%, #0a0c08 45%, #0c0a07 60%, #080808 75%, #0c0907 90%, #080808 100%);
       color:#E8E8E8;
       overflow-x:hidden;
       min-height:100vh;
@@ -32,20 +33,23 @@
     .grain{position:fixed;inset:0;pointer-events:none;z-index:1000;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E")}
 
     /* Glow orb follows mouse */
-    .glow-orb{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#00FF8805 0%,#d4a54404 40%,transparent 70%);pointer-events:none;transition:left .6s ease,top .6s ease;z-index:0;transform:translate(-50%,-50%)}
+    .glow-orb{position:fixed;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,#00FF880a 0%,#d4a54408 35%,transparent 65%);pointer-events:none;transition:left .6s ease,top .6s ease;z-index:0;transform:translate(-50%,-50%)}
 
     /* ─── Background visuals ─── */
-    .bg-vis{position:absolute;pointer-events:none;z-index:0;opacity:.04}
+    .bg-vis{position:absolute;pointer-events:none;z-index:0;opacity:.07}
     .bg-vis svg{width:100%;height:100%}
-    .bg-grid{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.03;
-      background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+    .bg-grid{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.05;
+      background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
       background-size:60px 60px}
-    .bg-dots{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.04;
-      background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1px);
+    .bg-dots{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.06;
+      background-image:radial-gradient(circle,rgba(255,255,255,.2) 1px,transparent 1px);
       background-size:30px 30px}
     @keyframes dashMove{to{stroke-dashoffset:0}}
     @keyframes growUp{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-    @keyframes pulseGlow{0%,100%{opacity:.03}50%{opacity:.06}}
+    @keyframes pulseGlow{0%,100%{opacity:.05}50%{opacity:.12}}
+
+    /* Section dividers — glowing gradient lines between sections */
+    .s::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,#d4a54418,#00FF8818,#d4a54418,transparent)}
 
     /* ─── Sections ─── */
     .s{padding:120px 80px;position:relative;z-index:1;overflow:hidden}
@@ -230,8 +234,8 @@
     <line x1="500" y1="100" x2="500" y2="40" stroke="#00FF88" stroke-width="2" opacity=".3"/><rect x="496" y="45" width="8" height="40" fill="#00FF88" opacity=".25" rx="1"/>
   </svg>
   <!-- Radial accents -->
-  <div style="position:absolute;top:15%;right:10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#00FF8808,transparent 70%);pointer-events:none;animation:pulseGlow 8s ease-in-out infinite"></div>
-  <div style="position:absolute;bottom:10%;left:5%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#d4a54406,transparent 65%);pointer-events:none"></div>
+  <div style="position:absolute;top:15%;right:10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#00FF8812,transparent 70%);pointer-events:none;animation:pulseGlow 8s ease-in-out infinite"></div>
+  <div style="position:absolute;bottom:10%;left:5%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#d4a54410,transparent 65%);pointer-events:none"></div>
   <div class="fade" data-delay="0">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
       <svg width="36" height="36" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#00FF88" stroke-width="2"/><path d="M9 14.5L12.5 18L19 10" stroke="#00FF88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -275,9 +279,9 @@
 </section>
 
 <!-- ═══ ABOUT PROFESORUL VLAD ═══ -->
-<section class="s" id="about" style="background:linear-gradient(180deg,transparent 0%,#0d0a05 30%,#100c06 50%,#0d0a05 70%,transparent 100%)">
+<section class="s" id="about" style="background:linear-gradient(180deg,transparent 0%,#14100a 25%,#1a1408 50%,#14100a 75%,transparent 100%)">
   <!-- Gold ambient glow -->
-  <div style="position:absolute;top:20%;right:15%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#d4a54408,transparent 65%);pointer-events:none;animation:pulseGlow 10s ease-in-out infinite"></div>
+  <div style="position:absolute;top:20%;right:15%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#d4a54414,transparent 65%);pointer-events:none;animation:pulseGlow 10s ease-in-out infinite"></div>
   <!-- Background: network/constellation pattern -->
   <svg class="bg-vis" style="inset:0;width:100%;height:100%" viewBox="0 0 800 500" fill="none" preserveAspectRatio="xMidYMid slice">
     <circle cx="100" cy="80" r="3" fill="#00FF88" opacity=".4"/><circle cx="300" cy="150" r="2" fill="#00FF88" opacity=".3"/>
@@ -382,7 +386,7 @@
 <!-- ═══ VIDEOS — PLAYABLE, BY CATEGORY ═══ -->
 <section class="s" id="videos">
   <div class="bg-dots"></div>
-  <div style="position:absolute;bottom:0;left:5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#3b82f608,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;bottom:0;left:5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#3b82f610,transparent 70%);pointer-events:none"></div>
   <div class="fade">
     <div class="s-label">Direct de pe YouTube</div>
     <h2 class="s-title">Nu vorbim.<br><span class="green">Arătăm.</span></h2>
@@ -396,8 +400,8 @@
 </section>
 
 <!-- ═══ MODULES ═══ -->
-<section class="s" id="modules" style="background:linear-gradient(180deg,transparent 0%,#080a06 40%,#080a06 60%,transparent 100%)">
-  <div style="position:absolute;bottom:15%;left:10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,#d4a54406,transparent 65%);pointer-events:none"></div>
+<section class="s" id="modules" style="background:linear-gradient(180deg,transparent 0%,#0c1008 30%,#101a0e 50%,#0c1008 70%,transparent 100%)">
+  <div style="position:absolute;bottom:15%;left:10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,#d4a54410,transparent 65%);pointer-events:none"></div>
   <!-- Background: ascending bar chart -->
   <svg class="bg-vis" style="right:0;bottom:0;width:50%;height:70%" viewBox="0 0 400 300" fill="none" preserveAspectRatio="none">
     <defs><linearGradient id="barGrad" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#00FF88" stop-opacity="0"/><stop offset="100%" stop-color="#00FF88" stop-opacity=".2"/></linearGradient></defs>
@@ -471,7 +475,7 @@
 <!-- ═══ BONUSES ═══ -->
 <section class="s" id="bonuses">
   <div class="bg-grid"></div>
-  <div style="position:absolute;top:10%;right:10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,#a855f708,transparent 70%);pointer-events:none"></div>
+  <div style="position:absolute;top:10%;right:10%;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,#a855f712,transparent 70%);pointer-events:none"></div>
   <div class="fade">
     <div class="s-label">Bonusuri exclusive</div>
     <h2 class="s-title">Instrumente.<br><span class="green">Gratuite.</span></h2>
@@ -522,8 +526,8 @@
 </section>
 
 <!-- ═══ FAQ ═══ -->
-<section class="s" id="faq" style="background:linear-gradient(180deg,transparent 0%,#0c0906 30%,#0e0a06 50%,#0c0906 70%,transparent 100%)">
-  <div style="position:absolute;top:30%;right:5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#d4a54405,transparent 65%);pointer-events:none"></div>
+<section class="s" id="faq" style="background:linear-gradient(180deg,transparent 0%,#14100a 25%,#181208 50%,#14100a 75%,transparent 100%)">
+  <div style="position:absolute;top:30%;right:5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#d4a5440e,transparent 65%);pointer-events:none"></div>
   <div class="fade">
     <div class="s-label">Întrebări frecvente</div>
     <h2 class="s-title">Ai întrebări?<br><span class="green">Avem răspunsuri.</span></h2>
@@ -539,8 +543,8 @@
     <path d="M0 400 Q200 380 350 300 T600 120 T800 20 L800 400Z" fill="url(#ctaGrad)"/>
     <path d="M0 400 Q200 380 350 300 T600 120 T800 20" stroke="#00FF88" stroke-width="1" fill="none" opacity=".15"/>
   </svg>
-  <div style="position:absolute;left:20%;top:20%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#00FF8806,transparent 60%);pointer-events:none;animation:pulseGlow 6s ease-in-out infinite"></div>
-  <div style="position:absolute;right:15%;bottom:15%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#d4a54408,transparent 60%);pointer-events:none;animation:pulseGlow 8s ease-in-out infinite 3s"></div>
+  <div style="position:absolute;left:20%;top:20%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,#00FF8810,transparent 60%);pointer-events:none;animation:pulseGlow 6s ease-in-out infinite"></div>
+  <div style="position:absolute;right:15%;bottom:15%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,#d4a54414,transparent 60%);pointer-events:none;animation:pulseGlow 8s ease-in-out infinite 3s"></div>
   <div class="fade">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
       <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="13" stroke="#00FF88" stroke-width="2"/><path d="M9 14.5L12.5 18L19 10" stroke="#00FF88" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
